@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>내 대시보드</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .dashboard-container { max-width: 900px; margin: 0 auto; }
+        h1 { color: #333; }
+        h2 { color: #555; border-bottom: 2px solid #eee; padding-bottom: 5px; }
+        .role-info { background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .class-list { list-style: none; padding: 0; }
+        .class-list li { background-color: #fff; border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>나의 강의실 대시보드</h1>
+
+        <div class="role-info">
+            <p><strong>역할:</strong> {{ user_role|upper }}</p>
+            <p><strong>환영 메시지:</strong> {{ greeting }}</p>
+        </div>
+
+        {% if classes %}
+            <h2>{% if user_role == 'manager' %}전체 강의 목록{% elif user_role == 'instructor' %}담당 강의 목록{% else %}수강 중인 강의 목록{% endif %} (총 {{ classes|length }}개)</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>강의명</th>
+                        <th>강사</th>
+                        {% if user_role == 'student' %}
+                            <th>진행도(%)</th>
+                            <th>수강 신청일</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in classes %}
+                        {% with c=item.class_obj|default:item %}
+                        <tr>
+                            <td>{{ c.class_name }}</td>
+                            <td>{{ c.instructor.name }}</td>
+                            {% if user_role == 'student' %}
+                                <td>
+                                    <progress value="{{ item.progress }}" max="100"></progress>
+                                    {{ item.progress }}%
+                                </td>
+                                <td>{{ item.enrolled_at|date:"Y.m.d" }}</td>
+                            {% endif %}
+                        </tr>
+                        {% endwith %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>현재 보여줄 강의 목록이 없습니다.</p>
+        {% endif %}
+
+        <p style="margin-top: 30px;"><a href="{% url 'index' %}">메인 페이지로 돌아가기</a></p>
+    </div>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>dd</h1>>
+</body>
+</html>

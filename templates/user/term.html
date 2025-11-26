@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}회원가입 | 약관 동의{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/term.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-inner">
+    <h1 class="hero-title">회원가입</h1>
+  </div>
+</section>
+
+<main class="card-wrap">
+  <div class="card-inner">
+
+    <section class="agree-card">
+      <h2 class="card-title">DORO에 오신 것을 환영합니다</h2>
+      <p class="card-subcopy">다음 내용에 동의해주세요</p>
+
+      <form method="post" class="agree-form" action="{% url 'user:term' %}">
+        {% csrf_token %}
+
+        <label class="row all">
+          <input id="allAgree" type="checkbox" class="custom-checkbox">
+          <span class="checkbox-indicator"></span> 
+          <div class="txt">
+            <strong>모두 동의</strong>
+            <span class="hint">필수 및 선택 항목 동의 포함</span>
+          </div>
+        </label>
+
+        <hr class="split">
+
+        <label class="row item">
+          <input id="tos" type="checkbox" class="req custom-checkbox" name="agree_tos">
+          <span class="checkbox-indicator"></span> 
+          <div class="txt">
+            <span>DORO LMS 서비스 이용약관 동의 <b>(필수)</b></span>
+          </div>
+          <span class="arrow">›</span>
+        </label>
+
+        <label class="row item">
+          <input id="privacy" type="checkbox" class="req custom-checkbox" name="agree_privacy">
+          <span class="checkbox-indicator"></span> 
+          <div class="txt">
+            <span>개인정보 수집 및 이용 동의 <b>(필수)</b></span>
+          </div>
+          <span class="arrow">›</span>
+        </label>
+
+        <label class="row item">
+          <input id="marketing" type="checkbox" class="custom-checkbox" name="agree_marketing">
+          <span class="checkbox-indicator"></span> 
+          <div class="txt">
+            <span>개인정보 수집 및 이용 동의 <b>(선택)</b></span>
+          </div>
+          <span class="arrow">›</span>
+        </label>
+
+        <input type="hidden" name="agree" value="True">
+
+        <div class="cta">
+          <button id="nextBtn" type="submit" class="btn-primary" disabled>다음</button>
+        </div>
+        
+      </form>
+    </section>
+
+  </div></main><script>
+  (function () {
+    const all = document.getElementById('allAgree');
+    const next = document.getElementById('nextBtn');
+    
+    // (필수) 항목 2개
+    const reqs = document.querySelectorAll('.agree-card .req'); 
+    
+    // 개별 항목 3개
+    const individualCheckboxes = document.querySelectorAll('.agree-card .item input[type=checkbox]');
+
+    if (!all || !next || !reqs.length || !individualCheckboxes.length) {
+      console.error("DORO: 약관 동의 스크립트 요소를 찾지 못했습니다.");
+      return;
+    }
+
+    // "다음" 버튼 활성화 함수
+    function updateNextButton() {
+      const allReqChecked = Array.from(reqs).every(c => c.checked);
+      next.disabled = !allReqChecked;
+    }
+
+    // "모두 동의" 체크박스 상태 업데이트 함수
+    function updateAllCheckboxState() {
+      const allIndividualChecked = Array.from(individualCheckboxes).every(c => c.checked);
+      const someIndividualChecked = Array.from(individualCheckboxes).some(c => c.checked);
+
+      if (allIndividualChecked) {
+        all.checked = true;
+        all.indeterminate = false;
+      } else if (someIndividualChecked) {
+        all.checked = false;
+        all.indeterminate = true;
+      } else {
+        all.checked = false;
+        all.indeterminate = false;
+      }
+    }
+
+    // "모두 동의" 클릭 시
+    all.addEventListener('change', () => {
+      individualCheckboxes.forEach(c => c.checked = all.checked);
+      updateNextButton();
+    });
+
+    // '개별' 항목 클릭 시
+    individualCheckboxes.forEach(c => {
+      c.addEventListener('change', () => {
+        updateNextButton();
+        updateAllCheckboxState();
+      });
+    });
+
+    // 페이지 로드 시
+    updateNextButton();
+    updateAllCheckboxState();
+  })();
+</script>
+{% endblock %}

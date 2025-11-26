@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}로그인 | DORO LMS{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-inner">
+    <h1 class="hero-title">로그인</h1>
+  </div>
+</section>
+
+<main class="card-wrap">
+  <div class="card-inner">
+
+    <section class="login-card">
+      <div class="logo-row">
+        <img src="{% static 'img/doro_logo.png' %}" alt="DORO 로고" class="brand-badge">
+        <span class="logo-text"><b>DORO</b> | LMS</span>
+      </div>
+
+      {% if messages %}
+      <div class="messages" style="margin-bottom: 20px;">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" style="padding: 10px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 5px; margin-bottom: 10px;">
+          {{ message }}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <form method="post" class="login-form" action="{% url 'user:login' %}" novalidate>
+        {% csrf_token %}
+        
+        {{ form.non_field_errors }}
+
+        <div class="field">
+          <label for="id_username">아이디(이메일)</label>
+          <input type="text" name="username" placeholder="DORO ID(이메일)" required autocomplete="username" id="id_username">
+          {{ form.username.errors }}
+        </div>
+
+        <div class="field">
+          <label for="id_password">비밀번호</label>
+          <input type="password" name="password" placeholder="비밀번호" required autocomplete="current-password" id="id_password">
+          {{ form.password.errors }}
+        </div>
+
+        <div class="options">
+          <label class="checkbox"><input type="checkbox" name="remember_me"> 로그인 상태 유지</label>
+        </div>
+
+        <button type="submit" class="btn-primary">DORO ID 로그인</button>
+      </form>
+
+      <div class="find-links" style="text-align: center; margin-top: 15px;">
+        <a href="{% url 'user:signup' %}" style="margin-right: 10px;">회원가입</a>
+
+        <!-- 이 부분이 핵심입니다! -->
+        <a href="{% url 'user:find_id' %}" style="margin-right: 10px;">ID 찾기</a>
+
+        <!-- 비밀번호 찾기 링크도 미리 추가해둡니다. -->
+        <a href="{% url 'user:password_reset' %}">비밀번호찾기</a>
+      </div>
+    </section>
+
+  </div></main>{% endblock %}

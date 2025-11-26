@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}DORO | LMS - 메인{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block content %}
+  <!-- 상단 히어로 -->
+  <section class="hero-banner">
+    <div class="hero-inner">
+      <h1 class="hero-title">당신의 학습을 위한<br><span>DORO LMS</span></h1>
+      <p class="hero-sub">AI가 추천하는 맞춤형 강의로 더 스마트하게 성장하세요.</p>
+    </div>
+  </section>
+
+  <!-- 콘텐츠 메인 영역 -->
+  <main class="main-content container">
+
+    <!-- AI 강의추천 -->
+    <section class="card ai-section">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <h2 class="card-title" style="margin: 0;">🎓 최신 강의</h2>
+        <div>
+          {% if request.user.is_authenticated %}
+            {% if request.user.role == "instructor" or request.user.role == "manager" %}
+            <a href="{% url 'course:course_create' %}" style="display: inline-block; padding: 6px 14px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px; font-size: 14px;">
+              ➕ 강의 등록
+            </a>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="card-body">
+        {% if recent_courses %}
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px;">
+            {% for course in recent_courses %}
+            <a href="{% url 'course:course_detail' course.course_id %}" style="text-decoration: none; color: inherit; border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; transition: box-shadow 0.2s;">
+              <div style="text-align: center; margin-bottom: 15px; font-size: 48px;">📚</div>
+              <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">{{ course.title }}</h3>
+              <p style="font-size: 14px; color: #6c757d; margin-bottom: 10px;">{{ course.instructor.name }}</p>
+              <div style="display: flex; justify-content: space-between; font-size: 12px; color: #6c757d;">
+                <span>{{ course.created_at|date:"Y.m.d" }}</span>
+                <span>👁️ {{ course.views }}</span>
+              </div>
+            </a>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div style="padding: 40px; text-align: center; color: #6c757d;">
+            <p>등록된 강의가 없습니다.</p>
+            {% if request.user.is_authenticated %}
+              {% if request.user.role == "instructor" or request.user.role == "manager" %}
+              <p style="margin-top: 15px;">
+                <a href="{% url 'course:course_create' %}" style="display: inline-block; padding: 8px 16px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px;">
+                  첫 강의 등록하기
+                </a>
+              </p>
+              {% endif %}
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </section>
+
+    <!-- 공지사항 -->
+    <section class="card notice-section">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <h2 class="card-title" style="margin: 0;">📢 공지사항</h2>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <a href="{% url 'board:notice_list' %}" style="color: #6c757d; text-decoration: none; font-size: 14px;">더보기 →</a>
+
+          {% if request.user.is_authenticated %}
+            {% if request.user.role == "instructor" or request.user.role == "manager" %}
+            <a href="{% url 'board:notice_create' %}" style="display: inline-block; padding: 6px 14px; background-color: #0d6efd; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: 500;">
+              ✏️ 작성하기
+            </a>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="card-body">
+        {% if recent_notices %}
+          <ul style="list-style: none; padding: 0; margin: 0;">
+            {% for notice in recent_notices %}
+            <li style="padding: 15px; border-bottom: 1px solid #e9ecef; {% if forloop.last %}border-bottom: none;{% endif %}">
+              <a href="{% url 'board:notice_detail' notice.notice_id %}" style="text-decoration: none; color: #212529; display: flex; justify-content: space-between; align-items: center;">
+                <div style="flex: 1;">
+                  {% if notice.is_pinned %}
+                    <span style="display: inline-block; padding: 2px 8px; background-color: #dc3545; color: white; font-size: 12px; font-weight: bold; border-radius: 3px; margin-right: 8px;">공지</span>
+                  {% endif %}
+                  <span style="font-weight: 500;">{{ notice.title }}</span>
+                </div>
+                <span style="color: #6c757d; font-size: 14px; margin-left: 15px;">{{ notice.created_at|date:"Y.m.d" }}</span>
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <div style="padding: 40px; text-align: center; color: #6c757d;">
+            <p style="margin-bottom: 10px;">📋 등록된 공지사항이 없습니다.</p>
+            {% if request.user.is_authenticated %}
+              {% if request.user.role == "instructor" or request.user.role == "manager" %}
+              <a href="{% url 'board:notice_create' %}" style="display: inline-block; padding: 8px 16px; background-color: #0d6efd; color: white; text-decoration: none; border-radius: 5px; margin-top: 10px;">
+                첫 공지사항 작성하기
+              </a>
+              {% endif %}
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </section>
+
+  </main>
+{% endblock %}

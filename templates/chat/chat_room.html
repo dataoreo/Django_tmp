@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>채팅방: 채널 {{ channel_id }}</title>
+</head>
+<body>
+    <h2>채널 ID: {{ channel_id }} (현재 접속자: {{ request.user.name }})</h2>
+    <div id="log" style="height: 300px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px;"></div>
+    <input id="chat-message-input" type="text" size="100"><br>
+    <input id="chat-message-submit" type="button" value="보내기">
+
+    <script>
+        // ⚠️ WebSocket URL 설정
+        const channelId = "1";
+        const chatSocket = new WebSocket(
+    // window.location.host 대신 window.location.hostname + ':8001' 사용
+            'ws://' + window.location.hostname + ':8001/ws/chat/' + channelId + '/'
+        );
+
+        // 1. 서버로부터 메시지를 받았을 때
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            const message = data.message;
+            const sender = data.sender;
+            const sent_at = data.sent_at;
+
+            // 메시지를 로그에 추가
+            const logDiv = document.querySelector('#log');
+            logDiv.innerHTML += (
+                '<p>[' + sent_at + '] <b>' + sender + '</b>: ' + message + '</p>'
+            );
+            // 스크롤 최하단으로 이동
+            logDiv.scrollTop = logDiv.scrollHeight;
+        };
+
+        // 2. 연결이 끊어졌을 때
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        // 3. 메시지 전송 처리
+        const messageInputDom = document.querySelector('#chat-message-input');
+        const submitButton = document.querySelector('#chat-message-submit');
+
+        messageInputDom.focus();
+        messageInputDom.onkeyup = function(e) {
+            if (e.key === 'Enter') {
+                submitButton.click();
+            }
+        };
+
+        submitButton.onclick = function(e) {
+            const message = messageInputDom.value;
+            if (message.trim() === '') return;
+
+            // 서버로 JSON 형식의 메시지를 전송
+            chatSocket.send(JSON.stringify({
+                'message': message
+            }));
+
+            messageInputDom.value = ''; // 입력창 비우기
+        };
+    </script>
+</body>
+</html>

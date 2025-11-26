@@ -1,0 +1,70 @@
+:root{
+  --line:#CBC6C6; --ink:#000; --muted:#717070; --btn-purple:#5651E9;
+  --brand-blue:#4650D5; --brand-pipe-gray:#BDBDBD;
+  --banner-blue:rgba(1,119,254,0.69); --mypage-blue:rgba(75,184,251,0.9);
+  /* 헤더 바로 붙이기 */
+  --content-top:0px;
+}
+
+/* base의 패딩 간섭 제거 */
+.wrapper{ padding:0 !important; }
+
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;-webkit-font-smoothing:antialiased}
+body{font-family:'Inter','Noto Sans KR',system-ui,Segoe UI,Roboto,Arial,sans-serif}
+
+#canvas{ position:relative; width:1440px; min-height:1200px; margin:0 auto; background:#fff; }
+
+/* ── 히어로 ── */
+#bgMypage{ position:absolute; left:0; top:var(--content-top); width:1440px; height:220px; background:var(--mypage-blue); }
+#pageTitle{
+  position:absolute; left:215px; top:calc(var(--content-top) + 120px);
+  width:600px; font-size:48px; line-height:58px; font-weight:400; color:#fff; white-space:nowrap;
+}
+
+/* ── 좌측 메뉴 ── */
+#menuTitle{ position:absolute; left:215px; top:calc(var(--content-top) + 260px); font-size:36px; line-height:44px; color:var(--ink); }
+#menuBox{ position:absolute; left:215px; top:calc(var(--content-top) + 321px); width:241px; height:716px; background:#fff; border:1px solid var(--line); border-radius:4px; }
+#menuLine1{ position:absolute; left:214.99px; top:calc(var(--content-top) + 380.5px); width:241.02px; border-top:1px solid var(--line); }
+#menuLine2{ position:absolute; left:215px; top:calc(var(--content-top) + 439.5px); width:241.02px; border-top:1px solid var(--line); }
+#menuItem1{ position:absolute; left:238px; top:calc(var(--content-top) + 343px); font-size:20px; color:var(--ink); white-space:nowrap; text-decoration:none; }
+#menuItem2{ position:absolute; left:236px; top:calc(var(--content-top) + 399px); font-size:20px; color:var(--ink); white-space:nowrap; text-decoration:none; }
+
+/* ── 우측 카드 ── */
+#infoBox{
+  position:absolute; left:490px; top:calc(var(--content-top) + 321px);
+  width:685px; height:500px; background:#fff; border:1px solid var(--line); border-radius:10px;
+}
+/* 카드 내부 좌표(카드 기준) */
+#infoTitle{ position:absolute; left:29px; top:36px; font-size:24px; color:var(--ink); }
+#editBtn{
+  position:absolute; right:29px; top:30px;
+  min-width:72px; height:36px; padding:0 14px;
+  background:var(--btn-purple); border:1px solid var(--btn-purple); border-radius:10px; color:#fff;
+  font-size:14px; display:flex; align-items:center; justify-content:center; cursor:pointer; text-decoration:none; white-space:nowrap;
+}
+#infoSub{ position:absolute; left:29px; top:79px; width:520px; font-size:14px; line-height:17px; color:var(--muted); }
+#panel{ position:absolute; left:29px; top:132px; width:634px; height:160px; background:rgba(229,229,229,.42); border-radius:10px; }
+
+/* 읽기 라벨/값 (카드 내부 기준) */
+.rowLbl{ position:absolute; left:47px; font-size:14px; color:var(--ink); white-space:nowrap; }
+.rowVal{ position:absolute; left:230px; font-size:14px; color:var(--ink); white-space:nowrap; }
+#lblPhone{ top:159px; }  #valPhone{ top:159px; }
+#lblEmail{ top:189px; }  #valEmail{ top:189px; }
+#lblAddr { top:219px; }  #valAddr { top:219px; }
+#lblBirth{ top:249px; }  #valBirth{ top:249px; }
+
+/* ── 회원탈퇴(카드 폭 맞춤) ── */
+#withdrawBox{
+  position:absolute; left:490px; top:calc(var(--content-top) + 850px);
+  width:685px; min-height:120px; background:#fff; border:1px solid var(--line); border-radius:10px;
+}
+#withdrawTitle{ position:absolute; left:29px; top:24px; font-size:24px; color:var(--ink); }
+#deleteBtn{
+  position:absolute; right:29px; top:24px; min-width:64px; height:34px; padding:0 12px;
+  background:#fff; color:var(--ink); border:1px solid var(--ink); border-radius:10px; font-size:14px;
+  display:flex; align-items:center; justify-content:center; cursor:pointer; text-decoration:none; white-space:nowrap;
+}
+
+/* 헤더 대체 요소 미사용 */
+#brandWrap,#banner,#navLinks,#greeting{ display:none !important; }

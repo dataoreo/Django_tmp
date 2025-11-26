@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <h1>환영합니다, {{ request.user.name }} 학생님!</h1>
+        <p class="text-muted">현재 역할: {{ user_role }}</p>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                최신 역량 진단 (DIMC) 결과
+            </div>
+            <div class="card-body">
+                {% if dimc_results %}
+                    <h5 class="card-title">진단일: {{ dimc_results.tested_at|date:"Y년 m월 d일" }}</h5>
+                    <p class="card-text">
+                        **D/I/M/C 점수:** {{ dimc_results.D_score }}/{{ dimc_results.I_score }}/{{ dimc_results.M_score }}/{{ dimc_results.C_score }}
+                    </p>
+                    <a href="{% url 'user:mypage' %}" class="btn btn-sm btn-info">내 모든 진단 기록 보기</a>
+                {% else %}
+                    <p class="card-text">아직 등록된 DIMC 진단 결과가 없습니다.</p>
+                    <a href="{% url 'user:DIMC' %}" class="btn btn-primary">DIMC 진단 시작하기</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <h2>수강 중인 강의</h2>
+        {% if enrolled_classes %}
+            <div class="list-group">
+                {% for class_obj in enrolled_classes %}
+                    <a href="{% url 'courses:detail' class_obj.class_id %}" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ class_obj.class_name }}</h5>
+                            <small class="text-muted">강사: {{ class_obj.instructor.name }}</small>
+                        </div>
+                        <p class="mb-1 text-secondary">수강 신청 완료</p>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>현재 수강 중인 강의가 없습니다. 새로운 강의를 찾아보세요.</p>
+        {% endif %}
+    </div>
+{% endblock %}

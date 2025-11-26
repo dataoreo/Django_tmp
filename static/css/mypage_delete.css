@@ -1,0 +1,50 @@
+:root{
+  --line:#CBC6C6; --ink:#000; --muted:#717070; --btn-purple:#5651E9;
+  --danger:#b91c1c; --mypage-blue:rgba(75,184,251,0.9);
+  --content-top:0px;
+}
+.wrapper{ padding:0 !important; }
+
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;-webkit-font-smoothing:antialiased}
+body{font-family:'Inter','Noto Sans KR',system-ui,Segoe UI,Roboto,Arial,sans-serif}
+
+#canvas{ position:relative; width:1440px; min-height:900px; margin:0 auto; background:#fff; }
+
+/* 히어로 */
+#bgMypage{ position:absolute; left:0; top:var(--content-top); width:1440px; height:220px; background:var(--mypage-blue); }
+#pageTitle{
+  position:absolute; left:215px; top:calc(var(--content-top) + 120px);
+  width:600px; font-size:48px; line-height:58px; font-weight:400; color:#fff; white-space:nowrap;
+}
+
+/* 좌측 메뉴 (마이페이지와 동일) */
+#menuTitle{
+  position:absolute; left:215px; top:calc(var(--content-top) + 260px);
+  font-size:36px; line-height:44px; color:var(--ink);
+}
+#menuBox{ position:absolute; left:215px; top:calc(var(--content-top) + 321px); width:241px; height:716px; background:#fff; border:1px solid var(--line); border-radius:4px; }
+#menuLine1{ position:absolute; left:214.99px; top:calc(var(--content-top) + 380.5px); width:241.02px; border-top:1px solid var(--line); }
+#menuLine2{ position:absolute; left:215px; top:calc(var(--content-top) + 439.5px); width:241.02px; border-top:1px solid var(--line); }
+#menuItem1{ position:absolute; left:238px; top:calc(var(--content-top) + 343px); font-size:20px; color:var(--ink); text-decoration:none; }
+#menuItem2{ position:absolute; left:236px; top:calc(var(--content-top) + 399px); font-size:20px; color:var(--ink); word-break:keep-all; text-decoration:none; }
+
+/* 우측 확인 카드 */
+#confirmBox{
+  position:absolute; left:490px; top:calc(var(--content-top) + 321px);
+  width:685px; min-height:220px; background:#fff; border:1px solid var(--line);
+  border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,.06); padding:24px;
+}
+.confirmTitle{ font-size:22px; font-weight:700; color:#111827; margin-bottom:8px; }
+.confirmText{ font-size:15px; color:#4b5563; line-height:1.6; }
+.confirmActions{ margin-top:18px; display:flex; gap:10px; justify-content:flex-end; align-items:center; }
+.btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  height:38px; padding:0 18px; border-radius:999px; font-weight:700; font-size:14px;
+  border:1.5px solid #cbd5e1; background:#fff; color:#334155; text-decoration:none; cursor:pointer;
+}
+.btn:hover{ background:#f3f6fb; }
+.btn.danger{ border-color:var(--danger); color:#fff; background:var(--danger); }
+.btn.danger:hover{ filter:brightness(0.95); }
+
+#brandWrap,#banner,#navLinks,#greeting{ display:none !important; }

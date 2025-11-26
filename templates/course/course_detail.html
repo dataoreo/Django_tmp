@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ course.title }} | DORO LMS{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-inner">
+    <h1 class="hero-title">강의 상세</h1>
+  </div>
+</section>
+
+<main class="card-wrap">
+  <div class="card-inner">
+
+    <article style="max-width: 900px; margin: 0 auto;">
+
+      <!-- 강의 정보 -->
+      <header style="border-bottom: 2px solid #dee2e6; padding-bottom: 20px; margin-bottom: 20px;">
+        <h2 style="margin: 10px 0 20px; font-size: 28px; font-weight: 600;">{{ course.title }}</h2>
+
+        <div style="display: flex; gap: 20px; color: #6c757d; font-size: 14px;">
+          <span>👨‍🏫 강사: {{ course.instructor.name }}</span>
+          <span>📅 등록일: {{ course.created_at|date:"Y년 m월 d일" }}</span>
+          <span>👁️ 조회수: {{ course.views }}</span>
+        </div>
+      </header>
+
+      <!-- 강의 설명 -->
+      <div style="line-height: 1.8; padding: 30px 0; min-height: 300px; white-space: pre-wrap;">
+        {{ course.description }}
+      </div>
+
+      <!-- 하단 버튼 -->
+      <footer style="border-top: 1px solid #dee2e6; padding-top: 20px; margin-top: 40px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+
+          <!-- 홈으로 버튼 -->
+          <a href="{% url 'index' %}" style="display: inline-block; padding: 10px 20px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 5px;">
+            ← 홈으로
+          </a>
+
+          <!-- 강사 본인만 수정/삭제 -->
+          {% if request.user == course.instructor %}
+          <div style="display: flex; gap: 10px;">
+            <a href="{% url 'course:course_update' course.course_id %}" style="display: inline-block; padding: 10px 20px; background-color: #0d6efd; color: white; text-decoration: none; border-radius: 5px;">
+              ✏️ 수정
+            </a>
+            <a href="{% url 'course:course_delete' course.course_id %}" style="display: inline-block; padding: 10px 20px; background-color: #dc3545; color: white; text-decoration: none; border-radius: 5px;">
+              🗑️ 삭제
+            </a>
+          </div>
+          {% endif %}
+        </div>
+      </footer>
+
+    </article>
+
+  </div>
+</main>
+{% endblock %}

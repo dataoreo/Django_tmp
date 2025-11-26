@@ -1,0 +1,333 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/main_calender.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="canvas" class="calendar-page">
+
+  <div class="calendar-layout">
+    <aside class="calendar-sidebar">
+      <div class="calendar-profile">
+        <div class="calendar-profile__avatar"></div>
+        <div class="calendar-profile__meta">
+          <p class="calendar-profile__name">
+            {% if request.user.get_full_name %}
+              {{ request.user.get_full_name }}
+            {% else %}
+              {{ request.user.username }}
+            {% endif %}
+          </p>
+          <p class="calendar-profile__email">{{ request.user.email }}</p>
+        </div>
+      </div>
+
+      <div class="calendar-sidebar__divider"></div>
+
+      <nav class="calendar-menu">
+        <h2 class="calendar-menu__title">MENU</h2>
+        <ul class="calendar-menu__list">
+          <li class="calendar-menu__item">
+            <a href="{% url 'user:dashboard' %}" class="calendar-menu__link">
+              대시보드
+            </a>
+          </li>
+          <li class="calendar-menu__item calendar-menu__item--active">
+            <a href="{% url 'user:main_calendar' %}" class="calendar-menu__link">
+              캘린더
+            </a>
+          </li>
+          <li class="calendar-menu__item">
+            <a href="#" class="calendar-menu__link">
+              강의 등록 신청
+            </a>
+          </li>
+          <li class="calendar-menu__item">
+            <a href="#" class="calendar-menu__link">
+              강의 준비실
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="calendar-main">
+      <header class="calendar-header">
+        <h1 class="calendar-title">캘린더</h1>
+
+        <div class="calendar-subtabs">
+          <button type="button" class="calendar-subtab is-active">
+            나의 일정 캘린더
+          </button>
+        </div>
+      </header>
+
+      <section class="calendar-board">
+        <header class="calendar-board__top">
+          <div class="calendar-month-nav">
+            <button type="button" class="calendar-month-nav__btn">&lt;</button>
+            <span class="calendar-month-nav__label">2025년 11월</span>
+            <button type="button" class="calendar-month-nav__btn">&gt;</button>
+          </div>
+        </header>
+
+        <div class="calendar-weekdays">
+          <span class="calendar-weekday calendar-weekday--sun">일</span>
+          <span class="calendar-weekday">월</span>
+          <span class="calendar-weekday">화</span>
+          <span class="calendar-weekday">수</span>
+          <span class="calendar-weekday">목</span>
+          <span class="calendar-weekday">금</span>
+          <span class="calendar-weekday calendar-weekday--sat">토</span>
+        </div>
+
+        <div class="calendar-grid">
+          {# 1행 #}
+          <div class="calendar-cell calendar-cell--muted">
+            <span class="calendar-day">26</span>
+          </div>
+          <div class="calendar-cell calendar-cell--muted">
+            <span class="calendar-day">27</span>
+          </div>
+          <div class="calendar-cell calendar-cell--muted">
+            <span class="calendar-day">28</span>
+          </div>
+          <div class="calendar-cell calendar-cell--muted">
+            <span class="calendar-day">29</span>
+          </div>
+          <div class="calendar-cell calendar-cell--muted">
+            <span class="calendar-day">30</span>
+          </div>
+          <div class="calendar-cell calendar-cell--muted">
+            <span class="calendar-day">31</span>
+          </div>
+          <div class="calendar-cell calendar-cell--sat">
+            <span class="calendar-day">1</span>
+          </div>
+
+          {# 2행 #}
+          <div class="calendar-cell calendar-cell--sun">
+            <span class="calendar-day">2</span>
+          </div>
+          <div class="calendar-cell">
+            <span class="calendar-day">3</span>
+          </div>
+          <div class="calendar-cell">
+            <span class="calendar-day">4</span>
+          </div>
+          <div class="calendar-cell">
+            <span class="calendar-day">5</span>
+          </div>
+          <div class="calendar-cell">
+            <span class="calendar-day">6</span>
+            <a href="#"
+               class="calendar-event calendar-event--blue js-open-lecture-modal">
+              [09:00~] D유형 강의_name
+            </a>
+          </div>
+          <div class="calendar-cell">
+            <span class="calendar-day">7</span>
+          </div>
+          <div class="calendar-cell calendar-cell--sat">
+            <span class="calendar-day">8</span>
+          </div>
+
+          {# 3행 #}
+          <div class="calendar-cell calendar-cell--sun">
+            <span class="calendar-day">9</span>
+          </div>
+          <div class="calendar-cell">
+            <span class="calendar-day">10</span>
+          </div>
+          <div class="calendar-cell">
+            <span class="calendar-day">11</span>
+          </div>
+          <div class="calendar-cell">
+            <span class="calendar-day">12</span>
+          </div>
+          <div class="calendar-cell">
+            <span class="calendar-day">13</span>
+            <a href="#"
+               class="calendar-event calendar-event--pink js-open-lecture-modal">
+              [16:00~] D유형 강의_name
+            </a>
+          </div>
+          <div class="calendar-cell">
+            <span class="calendar-day">14</span>
+          </div>
+          <div class="calendar-cell calendar-cell--sat">
+            <span class="calendar-day">15</span>
+          </div>
+
+          {# 4행 #}
+          <div class="calendar-cell calendar-cell--sun">
+            <span class="calendar-day">16</span>
+          </div>
+          <div class="calendar-cell">
+            <span class="calendar-day">17</span>
+          </div>
+          <div class="calendar-cell">
+            <span class="calendar-day">18</span>
+          </div>
+          <div class="calendar-cell">
+            <span class="calendar-day">19</span>
+          </div>
+          <div class="calendar-cell">
+            <span class="calendar-day">20</span>
+            <a href="#"
+               class="calendar-event calendar-event--yellow js-open-lecture-modal">
+              [13:20~] D유형 강의_name
+            </a>
+          </div>
+          <div class="calendar-cell">
+            <span class="calendar-day">21</span>
+          </div>
+          <div class="calendar-cell calendar-cell--sat">
+            <span class="calendar-day">22</span>
+            <a href="#"
+               class="calendar-event calendar-event--purple js-open-lecture-modal">
+              [13:30~] D유형 강의_name
+            </a>
+          </div>
+
+          {# 5행 #}
+          <div class="calendar-cell calendar-cell--sun">
+            <span class="calendar-day">23</span>
+          </div>
+          <div class="calendar-cell">
+            <span class="calendar-day">24</span>
+          </div>
+          <div class="calendar-cell">
+            <span class="calendar-day">25</span>
+          </div>
+          <div class="calendar-cell">
+            <span class="calendar-day">26</span>
+          </div>
+          <div class="calendar-cell">
+            <span class="calendar-day">27</span>
+          </div>
+          <div class="calendar-cell">
+            <span class="calendar-day">28</span>
+          </div>
+          <div class="calendar-cell calendar-cell--sat">
+            <span class="calendar-day">29</span>
+          </div>
+
+          {# 6행 #}
+          <div class="calendar-cell calendar-cell--sun">
+            <span class="calendar-day">30</span>
+          </div>
+          <div class="calendar-cell calendar-cell--muted">
+            <span class="calendar-day">1</span>
+          </div>
+          <div class="calendar-cell calendar-cell--muted">
+            <span class="calendar-day">2</span>
+          </div>
+          <div class="calendar-cell calendar-cell--muted">
+            <span class="calendar-day">3</span>
+          </div>
+          <div class="calendar-cell calendar-cell--muted">
+            <span class="calendar-day">4</span>
+          </div>
+          <div class="calendar-cell calendar-cell--muted">
+            <span class="calendar-day">5</span>
+          </div>
+          <div class="calendar-cell calendar-cell--muted calendar-cell--sat">
+            <span class="calendar-day">6</span>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="lecture-modal" class="lecture-modal" aria-hidden="true">
+    <div class="lecture-modal__backdrop"></div>
+
+    <div class="lecture-modal__card" role="dialog"
+         aria-modal="true" aria-labelledby="lecture-modal-title">
+      <button type="button" class="lecture-modal__close" aria-label="닫기">×</button>
+
+      <div class="lecture-modal__badge-row">
+        <div class="lecture-modal__badge-icon">!</div>
+        <span class="lecture-modal__badge-label">강의정보</span>
+      </div>
+
+      <h2 id="lecture-modal-title" class="lecture-modal__title">
+        D유형 강의_name
+      </h2>
+
+      <hr class="lecture-modal__divider">
+
+      <div class="lecture-modal__row">
+        <div class="lecture-modal__row-label">강의 일시</div>
+        <div class="lecture-modal__row-body">
+          11월 6일(목요일) 09:00 ~ 12:00
+        </div>
+      </div>
+
+      <div class="lecture-modal__row">
+        <div class="lecture-modal__row-label">강의 장소</div>
+        <div class="lecture-modal__row-body">
+          안산 슬기초등학교 컴퓨터실
+          <ul>
+            <li>상세주소_TEXT</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="lecture-modal__row">
+        <div class="lecture-modal__row-label">콘텐츠</div>
+        <div class="lecture-modal__row-body">
+          AI 노바 행사
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="support-banner">
+    <button type="button" class="support-banner__item">
+      <span class="support-banner__icon support-banner__icon--chat"></span>
+      <span class="support-banner__label">챗봇<br>바로가기</span>
+    </button>
+    <button type="button" class="support-banner__item">
+      <span class="support-banner__icon support-banner__icon--phone"></span>
+      <span class="support-banner__label">상담 전화<br>바로가기</span>
+    </button>
+    <button type="button" class="support-banner__item">
+      <span class="support-banner__icon support-banner__icon--qna"></span>
+      <span class="support-banner__label">1:1 문의<br>바로가기</span>
+    </button>
+  </aside>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const modal = document.getElementById('lecture-modal');
+  if (!modal) return;
+
+  const openButtons = document.querySelectorAll('.js-open-lecture-modal');
+  const closeButton = modal.querySelector('.lecture-modal__close');
+  const backdrop = modal.querySelector('.lecture-modal__backdrop');
+
+  function openModal(event) {
+    if (event) event.preventDefault();
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeModal() {
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden', 'true');
+  }
+
+  openButtons.forEach(function (btn) {
+    btn.addEventListener('click', openModal);
+  });
+
+  closeButton.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', closeModal);
+});
+</script>
+{% endblock %}

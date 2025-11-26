@@ -1,0 +1,544 @@
+/* ================================
+   공통 토큰
+   ================================ */
+:root {
+  --brand-blue: #0177FE;
+  --ink: #000000;
+  --muted: #7B6C6C;
+  --line-soft: #E5E7EB;
+  --line-calendar: #D3C6C6;
+  --bg-page: #FFFFFF;
+}
+
+/* base.html 의 wrapper 패딩 제거 (다른 페이지와 동일 패턴) */
+.wrapper {
+  padding: 0 !important;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', 'Poppins', 'Noto Sans KR', system-ui, -apple-system,
+    BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg-page);
+}
+
+/* ================================
+   페이지 레이아웃
+   ================================ */
+
+#canvas.calendar-page {
+  position: relative;              /* 우측 배너 기준점(고정 배너여도 상관없음) */
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 40px 0 80px;
+  min-height: calc(100vh - 64px);  /* 상단 파란 헤더 높이만큼 보정 */
+}
+
+.calendar-layout {
+  display: flex;
+  align-items: stretch;            /* 좌측 배너-캘린더 높이 맞추기 */
+  justify-content: flex-start;
+}
+
+/* ================================
+   좌측 사이드바
+   ================================ */
+
+.calendar-sidebar {
+  width: 230px;
+  padding: 16px 32px 0 32px;
+  border-right: 1px solid var(--line-soft); /* 좌측배너-캘린더 구분선 (세로 전체) */
+}
+
+/* 프로필 영역 */
+.calendar-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.calendar-profile__avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #E5E7EB;
+}
+
+.calendar-profile__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.calendar-profile__name {
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 18px;
+  color: #000;
+}
+
+.calendar-profile__email {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #000;
+}
+
+/* 프로필 아래 가로선 */
+.calendar-sidebar__divider {
+  width: 191px;
+  height: 0;
+  border-top: 1px solid #D2CACA;
+  margin: 16px 0 24px;
+}
+
+/* 메뉴 라벨 */
+.calendar-menu__title {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.calendar-menu__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* 각 메뉴 아이템 */
+.calendar-menu__item {
+  margin-bottom: 8px;
+}
+
+/* 메뉴 링크 공통 */
+.calendar-menu__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 177px;  /* Figma pill 폭 */
+  max-width: 177px;
+  height: 32px;
+  padding: 0 16px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+  color: #000000;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* 활성화 메뉴 (캘린더) */
+.calendar-menu__item--active .calendar-menu__link {
+  background: var(--brand-blue);
+  color: #FFFFFF;
+}
+
+/* 비활성 hover */
+.calendar-menu__item:not(.calendar-menu__item--active) .calendar-menu__link:hover {
+  background: #F3F4FF;
+}
+
+/* ================================
+   메인 캘린더 영역
+   ================================ */
+
+.calendar-main {
+  flex: 1;
+  padding: 32px 80px 0 48px;
+}
+
+/* 상단 타이틀 + 버튼 */
+.calendar-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.calendar-title {
+  margin: 0;
+  font-size: 32px;
+  line-height: 48px;
+  font-weight: 700;
+  color: #000000;
+}
+
+/* "나의 일정 캘린더" 버튼 (Figma 스타일) */
+.calendar-subtabs {
+  display: inline-flex;
+}
+
+.calendar-subtab {
+  min-width: 130px;
+  height: 40px;
+  padding: 0 24px;
+  border-radius: 10px;
+  border: none;
+  background: #FFFFFF;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.calendar-subtab.is-active {
+  /* 필요하면 active 스타일 추가 가능 */
+}
+
+/* ================================
+   캘린더 카드
+   ================================ */
+
+.calendar-board {
+  width: 1024px;
+  background: #FFFFFF;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.25);
+  border-radius: 10px;
+  padding: 16px 24px 24px;
+}
+
+/* 상단: 월 네비게이션 + 요일 */
+.calendar-board__top {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 월 네비게이션 */
+.calendar-month-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 4px;
+  font-size: 16px;
+}
+
+.calendar-month-nav__btn {
+  border: none;
+  background: transparent;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.calendar-month-nav__label {
+  font-weight: 400;
+  font-size: 16px;
+}
+
+/* 요일 헤더 */
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  width: 100%;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.calendar-weekday {
+  line-height: 21px;
+  font-weight: 400;
+  color: #000000;
+}
+
+.calendar-weekday--sun {
+  color: #FF0000;
+}
+
+.calendar-weekday--sat {
+  color: #0022FF;
+}
+
+/* ================================
+   캘린더 그리드
+   ================================ */
+
+.calendar-grid {
+  margin-top: 8px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: 116px;  /* 직사각형 셀 */
+  border-top: 1px solid var(--line-calendar);
+  border-left: 1px solid var(--line-calendar);
+}
+
+.calendar-cell {
+  position: relative;
+  padding: 8px;
+  border-right: 1px solid var(--line-calendar);
+  border-bottom: 1px solid var(--line-calendar);
+  font-size: 14px;
+}
+
+/* 날짜 숫자 (현재 HTML 구조: span.calendar-day) */
+.calendar-day {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 21px;
+  color: #5B5656;
+}
+
+/* 이전/다음달 날짜 */
+.calendar-cell--muted .calendar-day {
+  color: #AEA5A5;
+}
+
+/* 일요일 */
+.calendar-cell--sun .calendar-day {
+  color: #FF0000;
+}
+
+/* 토요일 */
+.calendar-cell--sat .calendar-day {
+  color: #5651E9;
+}
+
+/* 이벤트 박스 (Figma 직사각형) - 버튼/링크 공통 */
+.calendar-event {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  height: 27px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  padding: 2px 6px;
+  font-size: 8px;
+  font-weight: 700;
+  color: #FFFFFF;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-decoration: none;    /* a 태그일 때도 밑줄 제거 */
+  border: none;             /* button일 때 기본 테두리 제거 */
+  background: transparent;  /* 아래 색상 클래스로 채움 */
+  cursor: pointer;
+}
+
+/* 색상별 타입 */
+.calendar-event--blue {
+  background: #1BABE9;
+}
+
+.calendar-event--pink {
+  background: #DB4977;
+}
+
+.calendar-event--yellow {
+  background: #D3EB1A;
+  color: #FFFFFF;
+}
+
+.calendar-event--purple {
+  background: #862DCA;
+}
+
+/* ================================
+   우측 세로 배너 (챗봇 / 상담전화 / 1:1)
+   - notice.css와 동일한 동작 (position: fixed)
+   ================================ */
+
+.support-banner{
+  box-sizing:border-box;
+  position:fixed;
+  width:71px;
+  height:320px;
+
+  /* 카드 오른쪽 + 약간의 여백 (notice 기준) */
+  top:220px;
+  left:50%;
+  margin-left:calc(560px + 40px); /* 카드 반폭 560px + 여백 40px */
+
+  background:#FFFFFF;
+  border:0.5px solid rgba(0,0,0,0.78);
+  border-radius:20px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:space-between;
+  padding:8px 4px 10px;
+  z-index:1000;
+}
+
+/* 화면이 좁아질 때는 그냥 오른쪽으로 붙이기 */
+@media (max-width:1280px){
+  .support-banner{
+    left:auto;
+    margin-left:0;
+    right:16px;
+  }
+}
+
+.support-banner__item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  padding:4px 0;
+  width:100%;
+  border:none;
+  background:transparent;
+  cursor:pointer;
+}
+
+/* 아이콘 공통 */
+.support-banner__icon{
+  width:60px;
+  height:60px;
+  margin-bottom:2px;
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:contain;
+  background-color:transparent;
+}
+
+/* 실제 아이콘 파일 경로는 notice.css 와 동일하게 */
+.support-banner__icon--chat{
+  background-image:url("../img/icon_chatbot.png");
+}
+.support-banner__icon--phone{
+  background-image:url("../img/icon_phone.png");
+}
+.support-banner__icon--qna{
+  background-image:url("../img/icon_qna_1to1.png");
+}
+
+.support-banner__label{
+  font-family:'Poppins','Inter',system-ui,sans-serif;
+  font-size:14px;
+  line-height:16px;
+  text-align:center;
+  color:#000000;
+  white-space:nowrap;
+}
+
+/* ================================
+   강의 정보 모달 (달력 위 오버레이)
+   ================================ */
+
+.lecture-modal {
+  position: fixed;
+  inset: 0; /* top:0; right:0; bottom:0; left:0; */
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000; /* 캘린더·우측배너보다 위 */
+}
+
+.lecture-modal.is-open {
+  display: flex;
+}
+
+.lecture-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.lecture-modal__card {
+  position: relative;
+  width: 540px;
+  max-width: calc(100% - 40px);
+  background: #FFFFFF;
+  border-radius: 16px;
+  border: 0.5px solid #2600FF;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
+  padding: 24px 32px 28px;
+  z-index: 1;
+}
+
+/* X 버튼 – 상자 안 오른쪽 상단 */
+.lecture-modal__close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* 상단 "강의정보" 뱃지 라인 */
+.lecture-modal__badge-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.lecture-modal__badge-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(38, 0, 255, 0.78);
+  border: 1px solid rgba(91, 63, 255, 0.78);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  font-size: 11px;
+}
+
+.lecture-modal__badge-label {
+  font-weight: 700;
+  font-size: 11px;
+  color: #5651E9;
+}
+
+.lecture-modal__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.lecture-modal__divider {
+  margin: 12px 0 20px;
+  border: none;
+  border-top: 0.5px solid #9F9C9C;
+}
+
+.lecture-modal__row {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 10px;
+}
+
+.lecture-modal__row-label {
+  width: 80px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.lecture-modal__row-body {
+  flex: 1;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.lecture-modal__row-body ul {
+  margin: 0;
+  padding-left: 16px;
+  list-style: disc;
+}

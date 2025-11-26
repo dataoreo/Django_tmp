@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <title>DIMC 아카이브 - 결과지 업로드</title>
+    <style>
+        /* 기본적인 레이아웃과 디자인 스타일 */
+        body { font-family: sans-serif; color: #333; margin: 0; background-color: #f8f9fa; }
+        .header { background-color: #fff; padding: 15px 30px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; }
+        .header .logo a { color: #0056b3; text-decoration: none; font-size: 1.5em; font-weight: bold; }
+        .header .user-info { color: #555; }
+        .page-title-bar { background-color: #3498db; color: white; padding: 30px; }
+        .page-title-bar h1 { margin: 0; font-size: 2em; }
+        .main-container { display: flex; max-width: 1200px; margin: 40px auto; gap: 30px; }
+        .side-menu { flex: 0 0 200px; background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); height: fit-content; }
+        .side-menu h2 { font-size: 1.2em; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .side-menu ul { list-style: none; padding: 0; }
+        .side-menu ul li a { display: block; padding: 15px; text-decoration: none; color: #333; border-radius: 5px; }
+        .side-menu ul li a.active, .side-menu ul li a:hover { background-color: #e9ecef; }
+        .content-area { flex-grow: 1; }
+        .content-box { background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 30px; }
+        .content-box h3 { margin-top: 0; }
+        .btn { display: inline-block; padding: 8px 15px; border-radius: 5px; text-decoration: none; border: 1px solid transparent; cursor: pointer; }
+        .btn-primary { background-color: #007bff; color: white; border-color: #007bff; }
+        .btn-secondary { background-color: #6c757d; color: white; border-color: #6c757d; }
+
+        .profile-section { text-align: center; margin-bottom: 20px; }
+        .profile-img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #eee; }
+        .profile-name { font-size: 1.3em; font-weight: bold; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo"><a href="/">홈</a></div>
+        <div class="user-info">{{ user.name }}님 환영합니다.</div>
+    </div>
+    <div class="page-title-bar">
+        <h1>DIMC 아카이브</h1>
+    </div>
+    <div class="main-container">
+        <nav class="side-menu">
+            <h2>마이페이지 메뉴</h2>
+            <ul>
+                <li><a href="{% url 'user:mypage' %}">내정보</a></li>
+                <li><a href="{% url 'user:DIMC_archive' %}" class="active">DIMC 아카이브</a></li>
+                <!-- 다른 메뉴 항목들 추가 가능 -->
+            </ul>
+        </nav>
+        <section class="content-area">
+            <div class="content-box">
+                <h3>결과지 업로드</h3>
+
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">저장하기</button>
+                    <input type="file" name="dimc_file" required>
+                    <br><br>
+                    <button type="submit" class="btn btn-primary">업로드</button>
+                </form>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}이메일 인증 완료 | DORO LMS{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-inner">
+    <h1 class="hero-title">이메일 인증 완료</h1>
+  </div>
+</section>
+
+<main class="card-wrap">
+  <div class="card-inner">
+    <section class="login-card" style="text-align: center; padding: 40px;">
+      <div style="margin-bottom: 20px;">
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#28a745" stroke-width="2">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+      </div>
+
+      <h2 style="color: #28a745; margin-bottom: 15px;">이메일 인증이 완료되었습니다!</h2>
+      <p style="margin-bottom: 30px;">회원가입이 정상적으로 완료되었습니다. 이제 DORO LMS의 모든 서비스를 이용하실 수 있습니다.</p>
+
+      <a href="{% url 'index' %}" class="btn-primary" style="display: inline-block; padding: 12px 30px; text-decoration: none;">메인 페이지로 이동</a>
+    </section>
+  </div>
+</main>
+{% endblock %}
+

@@ -1,0 +1,45 @@
+{% load static %}
+
+<!-- mainpage 헤더 그대로 + 유동폭 컨테이너 -->
+<header id="mp-header">
+  <div class="mp-inner">
+    <!-- 브랜드 -->
+    <div id="brandWrap" aria-label="DORO LMS">
+      <a href="{% url 'index' %}" aria-label="홈으로 이동">
+        <!-- 색을 속성으로 고정: 검은 D 방지 -->
+        <svg id="logo" viewBox="0 0 112 112" width="112" height="112" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M10 6 H64 C92 6 102 28 102 56 S92 106 64 106 H10 Z" fill="#4650D5"/>
+          <path d="M10 100 C 38 68, 68 52, 102 50" fill="none" stroke="#FFFFFF" stroke-width="24" stroke-linecap="round"/>
+          <path d="M102 50 C 78 52, 56 66, 46 92 Q 44 98, 44 100 H 64 C 88 100, 102 86, 102 64 Z" fill="#4650D5"/>
+        </svg>
+      </a>
+      <div id="brand">
+        <span class="doro">DORO</span><span class="pipe">|</span><span class="lms">LMS</span>
+      </div>
+    </div>
+
+    <!-- 우측 액션 -->
+    <div id="actions" role="group" aria-label="계정 액션">
+      {% if user.is_authenticated %}
+        <a href="{% url 'user:mypage' %}" class="btn btn-outline">마이페이지</a>
+        <a href="{% url 'user:logout' %}" class="btn btn-primary">로그아웃</a>
+      {% else %}
+        <a id="btnLogin"  class="btn btn-primary" href="{% url 'user:login' %}">로그인</a>
+        <a id="btnSignup" class="btn btn-outline" href="{% url 'user:term' %}">회원가입</a>
+      {% endif %}
+    </div>
+
+    <!-- 배너/네비 -->
+    <div id="banner" aria-hidden="true"></div>
+    <nav id="topnav" aria-label="주 메뉴">
+
+        <a href="{% url 'user:mypage' %}">마이페이지</a>
+
+        <a href="{% url 'user:community' %}">커뮤니티</a>
+        <a href="{% url 'user:courses' %}">내 강의실</a>
+
+        <a href="/support/">고객지원</a>
+      <a href="#" onclick="window.open('https://dimctest.com/', '_blank'); window.location.href='{% url 'user:DIMC' %}'; return false;">DIMC진단</a>
+    </nav>
+  </div>
+</header>

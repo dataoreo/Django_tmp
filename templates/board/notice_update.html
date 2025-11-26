@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}공지사항 수정 | DORO LMS{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-inner">
+    <h1 class="hero-title">공지사항 수정</h1>
+  </div>
+</section>
+
+<main class="card-wrap">
+  <div class="card-inner">
+    <form method="post" style="max-width: 800px; margin: 0 auto;">
+      {% csrf_token %}
+
+      <div style="margin-bottom: 20px;">
+        <label style="display: block; margin-bottom: 8px; font-weight: 600;">{{ form.title.label }}</label>
+        {{ form.title }}
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <label style="display: block; margin-bottom: 8px; font-weight: 600;">{{ form.content.label }}</label>
+        {{ form.content }}
+      </div>
+
+      <div style="margin-bottom: 30px;">
+        <label style="display: flex; align-items: center; gap: 8px;">
+          {{ form.is_pinned }}
+          <span>{{ form.is_pinned.label }}</span>
+        </label>
+      </div>
+
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <a href="{% url 'board:notice_detail' notice.notice_id %}" style="display: inline-block; padding: 10px 20px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 5px;">
+          취소
+        </a>
+        <button type="submit" style="padding: 10px 20px; background-color: #0d6efd; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: 500;">
+          수정하기
+        </button>
+      </div>
+    </form>
+  </div>
+</main>
+{% endblock %}

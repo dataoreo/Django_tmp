@@ -1,0 +1,230 @@
+/*
+ * =========================================
+ * login.css (DORO LMS 디자인 시스템 v1.0 기준)
+ * =========================================
+ */
+
+/* * 🎨 2️⃣ 컬러 시스템 (구현 순서 ①)
+ */
+:root {
+  /* 🎯 메인 팔레트 */
+  --brand: #4C5CFF;
+  --brand-600: #3F4DE0;
+  --brand-cta: #4C8CFF;
+  --hero-top: #7AB8FF;
+  --hero-bot: #CFE6FF;
+  
+  /* ⚪ 중립/보조 색상 */
+  --ink: #1F2937;
+  --ink-sub: #6B7280;
+  --line: #E5E7EB;
+  --bg: #F9FAFB;      /* 페이지 배경 */
+  --surface: #FFFFFF; /* 카드 배경 */
+  --ok: #22C55E;
+  --err: #EF4444;
+  --shadow: 0 8px 24px rgba(17, 24, 39, 0.08);
+
+  /* 📐 4️⃣ 컴포넌트 스타일 */
+  --radius-input: 10px;
+  --radius-card: 16px;
+  --radius-pill: 9999px;
+}
+
+/* * 🎨 3️⃣ 타이포그래피 및 기본 설정
+ */
+* { box-sizing: border-box; }
+html { margin: 0; padding: 0; }
+body {
+  margin: 0;
+  font-family: "Inter", "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--ink);
+  background-color: var(--bg); /* [적용] 페이지 배경 */
+  line-height: 1.5;
+}
+a { text-decoration: none; color: inherit; }
+button { font: inherit; cursor: pointer; }
+
+/* * 📐 4️⃣ Hero 섹션 (가이드라인 준수)
+ */
+.hero {
+  background: linear-gradient(180deg, var(--hero-top) 0%, var(--hero-bot) 100%);
+  padding: 80px 0 100px; /* [적용] Whitespace(여백) 강조 */
+}
+.hero-inner {
+  max-width: 1440px; /* [적용] 반응형 가이드 */
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.hero-title {
+  margin: 0;
+  font-family: 'Poppins', "Inter", sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--ink); /* 가이드라인의 잉크색 (또는 #0b3a75) */
+  text-align: left; /* [적용] 좌측 텍스트 정렬 */
+}
+
+/* * 📐 4️⃣ 카드 레이아웃 (겹침 효과)
+ */
+.card-wrap {
+  margin: -56px auto 100px; /* [적용] 겹침 효과 및 Whitespace */
+}
+.card-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.login-card {
+  max-width: 460px; /* 로그인 폼에 적절한 좁은 너비 */
+  margin: 0 auto; /* 중앙 정렬 */
+  background: var(--surface); /* [적용] 카드 표면 */
+  border: none; /* 테두리 대신 그림자 사용 */
+  border-radius: var(--radius-card); /* [적용] 16px radius */
+  box-shadow: var(--shadow); /* [적용] soft shadow */
+  padding: 40px 36px; /* [적용] 내부 여백 */
+  text-align: center;
+}
+
+/* * 📐 4️⃣ 컴포넌트: 카드 내부 (로고, 폼)
+ */
+.logo-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 24px;
+  color: var(--ink);
+  font-weight: 800;
+  font-size: 1.2rem;
+}
+.brand-badge {
+  width: 28px;
+  height: 28px;
+}
+.logo-text b {
+  color: var(--brand); /* [적용] 브랜드 블루 */
+}
+.logo-text .bar {
+  color: #CFCFCF;
+  margin: 0 6px;
+  font-weight: 600;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 6px;
+}
+.field {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+label {
+  font-size: 14px;
+  font-weight: 600; /* Medium~Bold */
+  color: var(--ink);
+}
+
+/* * 📐 4️⃣ 컴포넌트: 인풋 (Input)
+ */
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  height: 42px; /* [적용] height 42px */
+  border: 1px solid var(--line); /* [적용] border */
+  border-radius: var(--radius-input); /* [적용] 10px radius */
+  padding: 0 14px;
+  font-size: 15px;
+  background: var(--surface);
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+input:focus {
+  border-color: var(--brand-600); /* [적용] focus 시 파란 glow */
+  box-shadow: 0 0 0 3px rgba(76, 92, 255, 0.15); /* --brand-600의 옅은 버전 */
+}
+
+/* * 📐 4️⃣ 컴포넌트: 옵션 (Checkbox)
+ */
+.options {
+  text-align: left;
+  font-size: 14px;
+  color: var(--ink-sub);
+  margin-top: 2px;
+}
+.checkbox input {
+  margin-right: 8px;
+  transform: translateY(1.5px);
+  accent-color: var(--brand); /* [적용] 체크박스 색상 통일 */
+}
+
+/* * 📐 4️⃣ 컴포넌트: 버튼 (Pill형)
+ */
+.btn-primary {
+  width: 100%;
+  height: 48px; /* 로그인 버튼은 42px보다 조금 더 큰 것이 안정적입니다 */
+  border-radius: var(--radius-pill); /* [적용] pill형 */
+  border: none;
+  background: var(--brand); /* [적용] 메인 블루 */
+  color: #fff;
+  font-weight: 700; /* [적용] 굵은 폰트 */
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background .2s ease;
+}
+.btn-primary:hover {
+  background: var(--brand-600); /* [적용] Hover 상태 */
+}
+
+/* * 📐 4️⃣ 컴포넌트: 하단 링크
+ */
+.login-links {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  font-size: 13px;
+  color: var(--ink-sub);
+  margin-top: 24px;
+}
+.login-links a { text-decoration: none; color: inherit; }
+.login-links a:hover { color: var(--brand); }
+
+/* * 🎨 1️⃣2️⃣ 에러 메시지 (서버 검증)
+ */
+.field .errorlist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--err);
+}
+form > .errorlist { /* non_field_errors */
+  list-style: none;
+  margin: 0 0 10px 0;
+  padding: 10px 14px;
+  background: rgba(239, 68, 68, 0.05);
+  border: 1px solid var(--err);
+  border-radius: var(--radius-input);
+  color: var(--err);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* * 📱 5️⃣ 반응형 가이드
+ */
+@media (max-width: 768px) {
+  .hero { padding: 60px 0 80px; }
+  .card-wrap { margin-top: -40px; }
+  .login-card { max-width: 100%; }
+}
+@media (max-width: 480px) {
+  .hero { padding: 40px 0 60px; }
+  .hero-title { font-size: 26px; }
+  .card-wrap { margin-top: -30px; }
+  .login-card { padding: 32px 24px; }
+}

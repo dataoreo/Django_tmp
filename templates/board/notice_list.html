@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}공지사항 | DORO LMS{% endblock %}
+
+{% block extra_css %}
+<style>
+  .notice-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  .notice-table thead tr {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+  }
+
+  .notice-table th {
+    padding: 12px;
+    text-align: center;
+    font-weight: 600;
+    color: #495057;
+  }
+
+  .notice-table td {
+    padding: 12px;
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  .notice-table tbody tr:hover {
+    background-color: #f8f9fa;
+  }
+
+  .notice-title {
+    text-decoration: none;
+    color: #212529;
+    font-weight: 500;
+  }
+
+  .notice-title:hover {
+    color: #0d6efd;
+  }
+
+  .pin-badge {
+    color: #dc3545;
+    font-weight: bold;
+    margin-right: 5px;
+  }
+
+  .btn-write {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #0d6efd;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 500;
+  }
+
+  .btn-write:hover {
+    background-color: #0b5ed7;
+  }
+
+  .debug-box {
+    background: #fff3cd;
+    border: 2px solid #ffc107;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 5px;
+  }
+
+  .debug-box h3 {
+    margin-top: 0;
+    color: #856404;
+  }
+
+  .debug-box p {
+    margin: 5px 0;
+    font-family: monospace;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- 👇 [디버깅] 삭제하지 마세요! -->
+<div class="debug-box">
+  <h3>🔍 디버깅 정보</h3>
+  <p><strong>로그인 여부:</strong> {{ request.user.is_authenticated }}</p>
+  {% if request.user.is_authenticated %}
+  <p><strong>사용자 이름:</strong> {{ request.user.name }}</p>
+  <p><strong>사용자 이메일:</strong> {{ request.user.email }}</p>
+  <p><strong>사용자 role:</strong> {{ request.user.role }}</p>
+  <p><strong>버튼 표시 조건:</strong>
+    {% if request.user.role == "instructor" or request.user.role == "manager" %}
+      <span style="color: green; font-weight: bold;">✅ 충족</span>
+    {% else %}
+      <span style="color: red; font-weight: bold;">❌ 불충족 (role: {{ request.user.role }})</span>
+    {% endif %}
+  </p>
+  {% else %}
+  <p style="color: red;"><strong>로그인되지 않음</strong></p>
+  {% endif %}
+</div>
+
+<section class="hero">
+  <div class="hero-inner">
+    <h1 class="hero-title">공지사항</h1>
+  </div>
+</section>
+
+<main class="card-wrap">
+  <div class="card-inner">
+
+    <!-- 👇 공지사항 작성 버튼 (강사/관리자만) -->
+    {% if request.user.is_authenticated %}
+      {% if request.user.role == "instructor" or request.user.role == "manager" %}
+      <div style="text-align: right; margin-bottom: 20px;">
+        <a href="{% url 'user:notice_create' %}" class="btn-write">
+          ✏️ 공지사항 작성
+        </a>
+      </div>
+      {% endif %}
+    {% endif %}
+
+    <!-- 👇 공지사항 목록 테이블 -->
+    <table class="notice-table">
+      <thead>
+        <tr>
+          <th style="width: 80px;">번호</th>
+          <th style="text-align: left;">제목</th>
+          <th style="width: 120px;">작성자</th>
+          <th style="width: 120px;">작성일</th>
+          <th style="width: 80px;">조회수</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for notice in notices %}
+        <tr>
+          <td style="text-align: center;">
+            {% if notice.is_pinned %}
+              <span class="pin-badge">📌</span>
+            {% else %}
+              {{ forloop.counter }}
+            {% endif %}
+          </td>
+          <td>
+            <a href="{% url 'user:notice_detail' notice.notice_id %}" class="notice-title">
+              {% if notice.is_pinned %}
+                <span class="pin-badge">[공지]</span>
+              {% endif %}
+              {{ notice.title }}
+            </a>
+          </td>
+          <td style="text-align: center;">{{ notice.author.name }}</td>
+          <td style="text-align: center;">{{ notice.created_at|date:"Y-m-d" }}</td>
+          <td style="text-align: center;">{{ notice.views }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5" style="padding: 50px; text-align: center; color: #6c757d;">
+            <p style="font-size: 18px; margin-bottom: 10px;">📋</p>
+            <p>등록된 공지사항이 없습니다.</p>
+            {% if request.user.is_authenticated %}
+              {% if request.user.role == "instructor" or request.user.role == "manager" %}
+              <p style="margin-top: 15px;">
+                <a href="{% url 'user:notice_create' %}" class="btn-write">첫 공지사항 작성하기</a>
+              </p>
+              {% endif %}
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+</main>
+
+{% endblock %}

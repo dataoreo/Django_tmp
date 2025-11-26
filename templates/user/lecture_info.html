@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/lecture_info.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="canvas" class="lecture-info-page">
+
+  <section class="lecture-card">
+    <!-- 상단 배지 + 제목 + 닫기 버튼 -->
+    <header class="lecture-card__header">
+      <div class="lecture-card__badge">
+        <span class="lecture-card__badge-icon">!</span>
+        <span class="lecture-card__badge-label">강의정보</span>
+      </div>
+
+      <h1 class="lecture-card__title">D유형 강의_name</h1>
+
+      <!-- X 버튼: 카드 안 우상단 -->
+      <button type="button"
+              class="lecture-card__close"
+              onclick="window.history.back();">
+        ×
+      </button>
+    </header>
+
+    <hr class="lecture-card__divider">
+
+    <!-- 내용 영역 -->
+    <dl class="lecture-card__body">
+      <div class="lecture-row">
+        <dt class="lecture-row__label">강의 일시</dt>
+        <dd class="lecture-row__value">
+          11월 6일(목요일) 09:00 ~ 12:00
+        </dd>
+      </div>
+
+      <div class="lecture-row">
+        <dt class="lecture-row__label">강의 장소</dt>
+        <dd class="lecture-row__value">
+          안산 슬기초등학교 컴퓨터실<br>
+          • 상세주소_TEXT
+        </dd>
+      </div>
+
+      <div class="lecture-row">
+        <dt class="lecture-row__label">콘텐츠</dt>
+        <dd class="lecture-row__value">
+          AI 노바 행사
+        </dd>
+      </div>
+    </dl>
+  </section>
+
+</div>
+{% endblock %}

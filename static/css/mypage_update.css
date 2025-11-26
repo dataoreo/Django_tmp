@@ -1,0 +1,48 @@
+/* 기본 레이아웃 */
+#infoBox{ padding:20px; border:1px solid #e5e7eb; border-radius:12px; background:#fff; }
+.panel{ display:flex; flex-direction:column; gap:12px; }
+
+/* 각 행(필) */
+.row{
+  display:flex; align-items:center; gap:12px;
+  padding:10px 14px; border:1px solid #e5e7eb;
+  background:#f7f9fc; border-radius:12px;
+}
+.row .lbl{ width:100px; color:#111; font-weight:600; }
+.row .main{ flex:1; display:flex; align-items:center; gap:10px; min-height:34px; }
+
+/* 토글 대상들: 기본은 숨김 */
+.row .text,
+.row .inputs{ display:none; }
+
+/* 마스크 텍스트는 기본 표시 */
+.row .masked{ display:inline-block; color:#111; }
+
+/* 수정(토글) 누른 행만 입력 노출, 마스크 숨김 */
+.row.editing .text,
+.row.editing .inputs{ display:flex; }
+.row.editing .masked{ display:none; }
+
+/* 입력 모양 */
+.row .text{
+  flex:1; height:36px; padding:0 12px; border:1px solid #d1d5db;
+  border-radius:8px; background:#fff; outline:none;
+}
+.row .inputs.phone input{ width:72px; height:36px; padding:0 8px; border:1px solid #d1d5db; border-radius:8px; }
+.row .inputs.birth input{ width:72px; height:36px; padding:0 8px; border:1px solid #d1d5db; border-radius:8px; }
+.row .sep{ opacity:.6; }
+
+/* 버튼 */
+.btn-mini{
+  height:28px; padding:0 10px; border:1px solid #cbd5e1; border-radius:999px;
+  background:#fff; font-size:12px; cursor:pointer;
+}
+.btn-mini[disabled]{ opacity:.5; cursor:default; }
+
+.form-actions{ display:flex; justify-content:flex-end; margin-top:8px; }
+.btn-save{
+  height:34px; padding:0 14px; border:0; border-radius:999px; background:#4f46e5; color:#fff; font-weight:700; cursor:pointer;
+}
+
+/* 접근성용 숨김 */
+.sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }

@@ -1,0 +1,101 @@
+/* ===== mainpage 헤더 변수 그대로 ===== */
+:root{
+  --line:#CBC6C6;
+  --brand-blue:#4650D5;             /* DORO/LMS & 로고 파랑 */
+  --brand-pipe:#BDBDBD;             /* | 회색 */
+  --btn-purple:#5651E9;             /* 로그인 버튼 */
+  --nav-bg: linear-gradient(0deg, rgba(30,126,255,0.06), rgba(30,126,255,0.06)), #4EA1FF; /* 파란 배경 */
+}
+
+/* ===== 헤더 래퍼: 유동폭 + 내부 1440 컨테이너 ===== */
+#mp-header{ width:100%; position:relative; background:#fff; }
+#mp-header .mp-inner{
+  position:relative;
+  max-width:1440px;   /* 원본 1440폭 유지 */
+  height:152px;       /* 75 + 77 */
+  margin:0 auto;
+}
+
+/* ===== 브랜드(로고 + DORO | LMS) (원본 그대로) ===== */
+#mp-header #brandWrap{
+  position:absolute; left:50%; top:10px; transform:translateX(-50%);
+  display:flex; align-items:center; gap:8px;
+}
+#mp-header #logo{ width:27px !important; height:28px !important; display:block; }
+
+#mp-header #brand{
+  font-family:'Poppins',sans-serif;
+  font-weight:400; font-size:36px; line-height:54px; white-space:nowrap;
+}
+#mp-header #brand .doro,
+#mp-header #brand .lms{ color:var(--brand-blue) }
+#mp-header #brand .pipe{ color:var(--brand-pipe); margin:0 .32ch }
+
+/* ===== 우측 액션(원본) ===== */
+#mp-header #actions{
+  position:absolute; right:36px; top:17px; z-index:10;
+  display:flex; align-items:center; gap:12px;
+}
+#mp-header #actions .btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  height:43px; padding:0 18px; border-radius:20px; font-size:20px;
+  text-decoration:none; white-space:nowrap; border:2px solid transparent;
+  transition:transform .05s ease;
+}
+#mp-header #actions .btn:active{ transform:translateY(1px); }
+
+/* 채움(로그인/로그아웃) */
+#mp-header #actions .btn-primary{
+  background:var(--btn-purple); color:#fff; border-color:var(--btn-purple);
+}
+/* 아웃라인(회원가입/마이페이지) */
+#mp-header #actions .btn-outline{
+  background:#fff; color:var(--btn-purple); border-color:var(--btn-purple);
+}
+
+/* ===== 배너(파란 배경) – 유동폭으로 확장 ===== */
+#mp-header #banner{
+  position:absolute; left:50%; transform:translateX(-50%);
+  top:75px; width:100vw;  /* ← 화면 가로 전체로 확장 (원본은 1440px) */
+  height:77px;
+  background:var(--nav-bg);
+  border-top:1px solid var(--line);
+}
+
+/* ===== 메뉴(GNB) (원본 그대로 중앙 정렬) ===== */
+#mp-header #topnav{
+  position:absolute; left:50%; transform:translateX(-50%);
+  top:75px; height:77px;
+  display:flex; align-items:center; justify-content:center;
+  gap:32px; width:auto; white-space:nowrap; padding:0 8px; z-index:1;
+}
+#mp-header #topnav a,
+#mp-header #topnav a:visited{
+  position:relative;
+  color:#fff; text-decoration:none; font-size:20px;
+  display:flex; align-items:center;
+  height:77px; line-height:1; padding:0 16px;
+}
+#mp-header #topnav a + a::before{
+  content:""; position:absolute; left:-10px; top:50%;
+  transform:translateY(-50%); width:1px; height:18px;
+  background:rgba(255,255,255,0.6);
+}
+
+/* ===== 충돌 방지: 헤더 안 링크는 밑줄/보라색 금지 ===== */
+#mp-header a,
+#mp-header a:visited{ text-decoration:none }
+
+/* ===== 반응형: 1440 미만일 때 내부는 줄이고, 배너는 항상 가로 전체 ===== */
+@media (max-width:1440px){
+  #mp-header .mp-inner{ max-width:100%; }
+}
+@media (max-width:860px){
+  #mp-header #logo{ width:24px !important; height:24px !important; }
+  #mp-header #topnav a{ font-size:18px; padding:0 12px; }
+}
+@media (max-width:680px){
+  #mp-header #actions .btn-outline{ display:none } /* 모바일: 로그인만 노출 */
+  #mp-header #topnav{ gap:18px; }
+  #mp-header #topnav a{ font-size:16px; }
+}

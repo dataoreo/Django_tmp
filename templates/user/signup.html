@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}회원가입{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/signup.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-inner">
+    <h1 class="hero-title">회원가입</h1>
+  </div>
+</section>
+
+<main class="card-wrap">
+  <div class="card-inner">
+
+    <section class="signup-card">
+      <h2 class="card-title">회원가입</h2>
+
+      <form method="post" action="{% url 'user:signup' %}">
+        {% csrf_token %}
+        
+        {{ form.non_field_errors }}
+
+        <div class="field col-2">
+          <label for="id_email">아이디(이메일)</label>
+          <div class="row-inline">
+            {{ form.email }}
+            <button type="button" id="check-email-btn" class="btn-aux">중복확인</button>
+          </div>
+          <div class="status-line">
+            <span id="msg-err-email" class="msg err">중복된 아이디(이메일) 입니다.</span>
+            <span id="msg-ok-email" class="msg ok">사용가능한 아이디(이메일) 입니다.</span>
+          </div>
+          {{ form.email.errors }}
+        </div>
+
+        <div class="field">
+          <label for="id_password">비밀번호</label>
+          {{ form.password }}
+          <p class="help">비밀번호는 8~16자로 설정해야 하며, 영문·숫자·특수문자 조합을 권장합니다.</p>
+          {{ form.password.errors }}
+        </div>
+
+        <div class="field">
+          <label for="id_password_confirm">비밀번호 확인</label>
+          {{ form.password_confirm }}
+          <span id="msg-err-pw" class="msg err">비밀번호가 일치하지 않습니다.</span>
+          {{ form.password_confirm.errors }}
+        </div>
+
+        <div class="field">
+          <label for="id_name">이름</label>
+          {{ form.name }}
+          {{ form.name.errors }}
+        </div>
+
+        <div class="field">
+          <label for="id_birthday">생년월일</label>
+          {{ form.birthday }}
+          {{ form.birthday.errors }}
+        </div>
+
+        <div class="field col-2">
+          <label for="id_phone_number">연락처(휴대폰)</label>
+          {{ form.phone_number }}
+          {{ form.phone_number.errors }}
+        </div>
+
+        <div class="field col-2">
+          <label for="id_address">주소</label>
+          {{ form.address }}
+          {{ form.address.errors }}
+        </div>
+
+        <div class="field col-2">
+          <label for="id_code">기관 인증코드</label>
+          {{ form.code }}
+          <span id="msg-err-code" class="msg err">인증코드가 올바르지 않습니다.</span>
+          <p class="help">
+            소속 기관(학교/학원/센터) 담당자에게 발급받은 인증코드를 입력하세요.<br>
+            올바른 인증코드를 입력해야 강사/매니저 권한이 부여됩니다.
+          </p>
+          {{ form.code.errors }}
+        </div>
+
+        <div class="cta">
+          <button type="submit" class="btn-primary">회원가입</button>
+        </div>
+      </form>
+    </section>
+
+  </div></main><script>
+  (function() {
+    // 1. 숨겨야 할 모든 JS 보조 메시지 요소를 찾습니다.
+    const msgEmailErr = document.getElementById('msg-err-email');
+    const msgEmailOk = document.getElementById('msg-ok-email');
+    const msgPwErr = document.getElementById('msg-err-pw');
+    const msgCodeErr = document.getElementById('msg-err-code');
+    
+    // 2. 페이지 로드 시 모든 JS 메시지를 즉시 숨깁니다.
+    if (msgEmailErr) msgEmailErr.style.display = 'none';
+    if (msgEmailOk) msgEmailOk.style.display = 'none';
+    if (msgPwErr) msgPwErr.style.display = 'none';
+    if (msgCodeErr) msgCodeErr.style.display = 'none';
+
+    // 3. '중복확인' 버튼 클릭 이벤트
+    const checkEmailBtn = document.getElementById('check-email-btn');
+    if (checkEmailBtn) {
+      checkEmailBtn.addEventListener('click', function() {
+        const emailInput = document.getElementById('id_email');
+        const email = emailInput.value;
+
+        // =======================================================
+        // [백엔드 연동]
+        // (규칙 #10) CSRF 토큰을 가져와야 함
+        // const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+        //
+        // 여기에 'email' 값을 서버로 보내 중복을 확인하는
+        // AJAX(fetch) 코드를 구현해야 합니다.
+        //
+        // 예: fetch('/user/check-email/', { 
+        //       method: 'POST', 
+        //       headers: { 'X-CSRFToken': csrfToken, 'Content-Type': 'application/json' },
+        //       body: JSON.stringify({ email: email })
+        //     })
+        //     .then(response => response.json())
+        //     .then(data => {
+        //       if (data.is_duplicate) {
+        //         msgEmailErr.style.display = 'block';
+        //         msgEmailOk.style.display = 'none';
+        //       } else {
+        //         msgEmailErr.style.display = 'none';
+        //         msgEmailOk.style.display = 'block';
+        //       }
+        //     });
+        // =======================================================
+
+        // [임시 데모] (백엔드 연동 전 테스트용)
+        console.log("중복 확인 시도: " + email);
+        if (email === 'test@test.com') { // 'test@test.com'을 중복이라고 가정
+          msgEmailErr.style.display = 'block';
+          msgEmailOk.style.display = 'none';
+        } else if (email === '') {
+          msgEmailErr.style.display = 'none';
+          msgEmailOk.style.display = 'none';
+        } else {
+          msgEmailErr.style.display = 'none';
+          msgEmailOk.style.display = 'block';
+        }
+      });
+    }
+
+    // 4. (선택사항) 비밀번호 확인 실시간 검사 로직
+    const pw1 = document.getElementById('id_password');
+    const pw2 = document.getElementById('id_password_confirm');
+
+    if (pw1 && pw2 && msgPwErr) {
+      // pw2 (비밀번호 확인) 입력창에서 키를 뗄 때마다 검사
+      pw2.addEventListener('keyup', function() {
+        if (pw1.value !== '' && pw2.value !== '' && pw1.value !== pw2.value) {
+          msgPwErr.style.display = 'block';
+        } else {
+          msgPwErr.style.display = 'none';
+        }
+      });
+      // pw1 (비밀번호) 입력창에서 키를 뗄 때도 검사
+      pw1.addEventListener('keyup', function() {
+        if (pw1.value !== '' && pw2.value !== '' && pw1.value !== pw2.value) {
+          msgPwErr.style.display = 'block';
+        } else {
+          msgPwErr.style.display = 'none';
+        }
+      });
+    }
+
+  })();
+</script>
+{% endblock %}

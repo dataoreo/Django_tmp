@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/mypage.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="canvas" role="main" aria-labelledby="pageTitle">
+  <div id="bgMypage"></div>
+  <h1 id="pageTitle">마이페이지</h1>
+
+  <!-- 좌측 메뉴 -->
+  <div id="menuTitle">메뉴</div>
+  <div id="menuBox"></div>
+  <div id="menuLine1"></div>
+  <div id="menuLine2"></div>
+  <a id="menuItem1" href="{% url 'user:mypage' %}">내 정보</a>
+  <a id="menuItem2" href="{% url 'user:DIMC_archive' %}">DIMC 아카이브</a>
+
+  <!-- 우측 카드 -->
+  <div id="infoBox">
+    <div id="infoTitle">회원정보</div>
+    <a id="editBtn" href="{% url 'user:mypage_update' %}">수정</a>
+
+    <div id="infoSub">
+      민감정보 보호를 위해 개인정보는 일부만 확인 가능하며,<br>
+      수정 페이지에서 정확한 개인정보 확인이 가능합니다.
+    </div>
+
+    <div id="panel"></div>
+
+    <!-- 연락처 (하이픈 유무 상관없이 마지막 4자리만 노출) -->
+    <div id="lblPhone" class="rowLbl">연락처</div>
+    <div id="valPhone" class="rowVal">
+      <span id="phone">
+        {% with raw=request.user.phone_number %}
+          {% if raw %}
+            {% with pn=raw|cut:"-" %}
+              {{ pn|slice:":3" }}-****-{{ pn|slice:"-4:" }}
+            {% endwith %}
+          {% else %}-{% endif %}
+        {% endwith %}
+      </span>
+    </div>
+
+    <!-- 이메일(아이디) -->
+    <div id="lblEmail" class="rowLbl">이메일(아이디)</div>
+    <div id="valEmail" class="rowVal">
+      <span id="email">
+        {% with e=request.user.email %}
+          {% if e %}
+            {{ e|slice:":2" }}****@{{ e|slice:"-6:" }}
+          {% else %}-{% endif %}
+        {% endwith %}
+      </span>
+    </div>
+
+    <!-- 주소 (앞 14글자만 표시) -->
+    <div id="lblAddr" class="rowLbl">주소</div>
+    <div id="valAddr" class="rowVal">
+      <span id="addr">
+        {% with a=request.user.address %}
+          {% if a %}
+            {{ a|slice:":14" }}{% if a|length > 14 %}…{% endif %}
+          {% else %}-{% endif %}
+        {% endwith %}
+      </span>
+    </div>
+
+    <!-- 생년월일 (연도만 노출) -->
+    <div id="lblBirth" class="rowLbl">생년월일</div>
+    <div id="valBirth" class="rowVal">
+      <span id="birth">
+        {% if request.user.birthday %}
+          {{ request.user.birthday|date:"Y" }}-**-**
+        {% else %}-{% endif %}
+      </span>
+    </div>
+  </div>
+
+  <!-- 회원탈퇴 -->
+  <div id="withdrawBox">
+    <div id="withdrawTitle">회원탈퇴</div>
+    <a id="deleteBtn" href="{% url 'user:mypage_delete' %}">탈퇴</a>
+  </div>
+</div>
+{% endblock %}

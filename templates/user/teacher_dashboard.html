@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}내 강의실 | DORO LMS{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/teacher_dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+  <main id="teacher-dashboard" role="main" aria-labelledby="pageTitle">
+    {# ▼▼▼ 삭제: 헤더 아래 중복 “내 강의실” 배너 #}
+    {# <div class="td-section-banner"><h1 id="pageTitle">내 강의실</h1></div> #}
+    {# ▲▲▲ 삭제 끝 #}
+
+    <div class="td-shell">
+      <!-- 좌측 사이드바 -->
+      <aside class="td-sidebar" aria-label="강사 프로필 및 메뉴">
+        <section class="td-profile">
+          <div class="td-avatar" aria-hidden="true"></div>
+          <div class="td-name">{{ request.user.get_full_name|default:request.user.username }}</div>
+          <div class="td-email">{{ request.user.email }}</div>
+        </section>
+
+        <div class="td-menu-title">MENU</div>
+        <nav class="td-menu" aria-label="보조 메뉴">
+          <a class="td-menu-item" href="{% url 'user:main_calendar' %}">캘린더</a>
+          <a class="td-menu-item" href="#">강의 등록 신청</a>
+          <a class="td-menu-item" href="#">지난 강의 조회</a>
+        </nav>
+
+        <a class="td-logout" href="{% url 'user:logout' %}">Log out</a>
+      </aside>
+
+      <!-- 우측 본문 -->
+      <section class="td-main">
+        <!-- 대시보드 헤더 -->
+        <header class="td-board-header">
+          <h2 id="pageTitle">대시보드</h2>
+          <a class="td-btn td-btn-primary" href="{% url 'user:main_calendar' %}">캘린더 바로가기</a>
+        </header>
+
+        <!-- 캘린더 -->
+        <section class="td-calendar" aria-label="주간 캘린더">
+          <div class="td-cal-grid">
+            <!-- 일 -->
+            <div class="td-cal-col">
+              <div class="td-cal-head is-sun">
+                <span class="td-cal-day">일(Sun)</span>
+                <span class="td-cal-date">5</span>
+              </div>
+              <div class="td-cal-body">
+                <div class="td-cal-event type-d">
+                  <div class="td-cal-ev-text">11:00AM [생활과학교실] - 호동초</div>
+                </div>
+              </div>
+            </div>
+            <!-- 월 -->
+            <div class="td-cal-col">
+              <div class="td-cal-head">
+                <span class="td-cal-day">월(Mon)</span>
+                <span class="td-cal-date">6</span>
+              </div>
+              <div class="td-cal-body"><div class="td-cal-empty"></div></div>
+            </div>
+            <!-- 화 -->
+            <div class="td-cal-col">
+              <div class="td-cal-head">
+                <span class="td-cal-day">화(Tue)</span>
+                <span class="td-cal-date">7</span>
+              </div>
+              <div class="td-cal-body"><div class="td-cal-empty"></div></div>
+            </div>
+            <!-- 수 -->
+            <div class="td-cal-col">
+              <div class="td-cal-head">
+                <span class="td-cal-day">수(Wed)</span>
+                <span class="td-cal-date">8</span>
+              </div>
+              <div class="td-cal-body">
+                <div class="td-cal-event type-i">
+                  <div class="td-cal-ev-text">3:00PM [단원수련관] - 드론부스</div>
+                </div>
+              </div>
+            </div>
+            <!-- 목 -->
+            <div class="td-cal-col">
+              <div class="td-cal-head">
+                <span class="td-cal-day">목(Thu)</span>
+                <span class="td-cal-date">9</span>
+              </div>
+              <div class="td-cal-body"><div class="td-cal-empty"></div></div>
+            </div>
+            <!-- 금 -->
+            <div class="td-cal-col">
+              <div class="td-cal-head">
+                <span class="td-cal-day">금(Fri)</span>
+                <span class="td-cal-date">10</span>
+              </div>
+              <div class="td-cal-body"><div class="td-cal-empty"></div></div>
+            </div>
+            <!-- 토 -->
+            <div class="td-cal-col">
+              <div class="td-cal-head is-sat">
+                <span class="td-cal-day">토(Sat)</span>
+                <span class="td-cal-date">11</span>
+              </div>
+              <div class="td-cal-body"><div class="td-cal-empty"></div></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 하단 2컬럼 -->
+        <section class="td-bottom">
+          <!-- 예정된 강의 -->
+          <section class="td-upcoming">
+            <div class="td-upcoming-head">
+              <h3>예정된 강의</h3>
+              <button class="td-icon-btn" type="button" aria-label="더 보기">+</button>
+            </div>
+            <hr class="td-sep">
+            <div class="td-upcoming-list">
+              <div class="td-up-item type-d">
+                <span class="td-up-date">2025-11-06</span>
+                <span class="td-up-title">NAME_D유형 강의제목</span>
+                <span class="td-up-dday">D-6</span>
+              </div>
+              <div class="td-up-item type-i">
+                <span class="td-up-date">2025-11-13</span>
+                <span class="td-up-title">NAME_I유형 강의제목</span>
+                <span class="td-up-dday">D-13</span>
+              </div>
+              <div class="td-up-item type-m">
+                <span class="td-up-date">2025-11-20</span>
+                <span class="td-up-title">NAME_M유형 강의제목</span>
+                <span class="td-up-dday">D-20</span>
+              </div>
+              <div class="td-up-item type-c">
+                <span class="td-up-date">2025-11-22</span>
+                <span class="td-up-title">NAME_C유형 강의제목</span>
+                <span class="td-up-dday">D-22</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- 다음 강의 -->
+          <section class="td-next">
+            <div class="td-next-head">
+              <div class="td-next-title">
+                <span class="td-next-icon" aria-hidden="true">🕒</span>
+                <h3>다음 강의</h3>
+                <span class="td-next-dday">D-6</span>
+              </div>
+            </div>
+            <hr class="td-sep">
+            <div class="td-next-card">
+              <div class="td-field">
+                <div class="td-label">강의 날짜</div>
+                <div class="td-value">2025/11/06(월) 09:00 ~ 13:00(4h)</div>
+              </div>
+              <div class="td-field">
+                <div class="td-label">강의명</div>
+                <div class="td-value">[학교로 찾아가는 생활과학교실] – 호동초등학교 6학년</div>
+              </div>
+              <div class="td-field">
+                <div class="td-label">컨텐츠</div>
+                <div class="td-value">AI Nova, SuperNova 같은 힘을 보여줘!</div>
+              </div>
+              <div class="td-field">
+                <div class="td-label">강의 장소</div>
+                <div class="td-value">안산호동초등학교(경기도 안산시 상록구 성호로 70) - 컴퓨터실</div>
+              </div>
+            </div>
+          </section>
+        </section>
+      </section>
+    </div>
+  </main>
+{% endblock %}
