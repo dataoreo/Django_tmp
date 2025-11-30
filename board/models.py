@@ -69,6 +69,8 @@ class CommunityComment(models.Model):
     comment_content = models.TextField(verbose_name="댓글 내용")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="생성 일시")
 
+    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
+
     class Meta:
         db_table = 'community_comment'
         verbose_name = '커뮤니티 댓글'

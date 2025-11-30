@@ -5,68 +5,212 @@
 
 {% block extra_css %}
 <style>
-  /* 기존 스타일 유지 */
-  .notice-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-  .notice-table thead tr { background-color: #f8f9fa; border-bottom: 2px solid #dee2e6; }
-  .notice-table th { padding: 12px; text-align: center; font-weight: 600; color: #495057; }
-  .notice-table td { padding: 12px; border-bottom: 1px solid #dee2e6; }
-  .notice-table tbody tr:hover { background-color: #f8f9fa; }
-  .notice-title { text-decoration: none; color: #212529; font-weight: 500; }
-  .notice-title:hover { color: #0d6efd; }
+  /* 테이블 스타일 */
+  .notice-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
 
-  /* 버튼 스타일 */
+  .notice-table thead tr {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+  }
+
+  .notice-table th {
+    padding: 12px;
+    text-align: center;
+    font-weight: 600;
+    color: #495057;
+  }
+
+  .notice-table td {
+    padding: 12px;
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  .notice-table tbody tr:hover {
+    background-color: #f8f9fa;
+  }
+
+  .notice-title {
+    text-decoration: none;
+    color: #212529;
+    font-weight: 500;
+  }
+
+  .notice-title:hover {
+    color: #0d6efd;
+  }
+
+  /* 👇 [수정 1] 글쓰기 버튼 스타일 (높이 고정) */
   .btn-write {
-    display: inline-block;
-    padding: 8px 16px;
+    display: inline-flex;       /* flex로 변경하여 내부 정렬 */
+    align-items: center;        /* 수직 중앙 정렬 */
+    justify-content: center;    /* 수평 중앙 정렬 */
+    height: 45px;               /* ⭐ 높이 강제 고정 */
+    padding: 0 20px;            /* 좌우 패딩만 설정 */
     background-color: #0d6efd;
     color: white;
     text-decoration: none;
     border-radius: 5px;
-    font-weight: 500;
-    font-size: 14px;
+    font-weight: 600;
+    font-size: 15px;
+    border: 1px solid #0d6efd;  /* 테두리 두께 맞춤 */
+    box-sizing: border-box;     /* 테두리 포함 크기 계산 */
+    vertical-align: middle;
   }
-  .btn-write:hover { background-color: #0b5ed7; }
 
-  /* 👇 [추가됨] 내 게시글 버튼 스타일 (회색) */
+  .btn-write:hover {
+    background-color: #0b5ed7;
+    border-color: #0b5ed7;
+  }
+
+  /* 👇 [수정 2] 내 게시글 버튼 스타일 (높이 고정) */
   .btn-my-post {
-    display: inline-block;
-    padding: 8px 16px;
-    background-color: #6c757d; /* 회색 */
+    display: inline-flex;       /* flex로 변경 */
+    align-items: center;        /* 수직 중앙 정렬 */
+    justify-content: center;    /* 수평 중앙 정렬 */
+    height: 45px;               /* ⭐ 높이 강제 고정 (글쓰기 버튼과 동일) */
+    padding: 0 20px;
+    background-color: #6c757d;
     color: white;
     text-decoration: none;
     border-radius: 5px;
-    font-weight: 500;
-    font-size: 14px;
-    margin-right: 5px; /* 작성 버튼과의 간격 */
+    font-weight: 600;
+    font-size: 15px;
+    margin-right: 8px;
+    border: 1px solid #6c757d;  /* 테두리 두께 맞춤 */
+    box-sizing: border-box;
+    vertical-align: middle;
   }
-  .btn-my-post:hover { background-color: #5c636a; }
 
-  /* 활성화된 내 게시글 버튼 (진하게 표시) */
+  .btn-my-post:hover {
+    background-color: #5c636a;
+    border-color: #5c636a;
+  }
+
+  /* 활성화된 버튼 (전체 글 보기) */
   .btn-my-post.active {
     background-color: #495057;
-    border: 2px solid #212529;
+    border: 1px solid #343a40; /* 테두리 색상만 변경 (두께는 유지) */
   }
 
   /* 태그(분류) 뱃지 스타일 */
-  .board-tag { display: inline-block; background-color: #e9ecef; color: #495057; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+  .board-tag {
+    display: inline-block;
+    background-color: #e9ecef;
+    color: #495057;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
 
-  /* 검색창, 페이지네이션, 탭 스타일 등 기존 코드 유지... */
-  .search-container { margin-top: 40px; display: flex; justify-content: center; }
-  .search-form { display: flex; flex-direction: row; align-items: center; gap: 5px; flex-wrap: nowrap; }
-  .search-input { padding: 0 12px; border: 1px solid #dee2e6; border-radius: 5px; width: 300px; height: 40px; box-sizing: border-box; font-size: 14px; }
-  .btn-search { display: inline-flex; align-items: center; justify-content: center; padding: 0 20px; height: 40px; background-color: #6c757d; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; white-space: nowrap; }
-  .btn-search:hover { background-color: #5c636a; }
+  /* 검색창 스타일 */
+  .search-container {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+  }
 
-  .pagination { margin-top: 30px; display: flex; justify-content: center; align-items: center; gap: 10px; }
-  .pagination a { text-decoration: none; color: #495057; padding: 5px 10px; border: 1px solid #dee2e6; border-radius: 4px; background: white; }
-  .pagination a:hover { background-color: #f1f3f5; }
-  .current-page { font-weight: 700; color: #0d6efd; }
+  .search-form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+    flex-wrap: nowrap;
+  }
 
-  .category-nav { display: flex; gap: 15px; padding: 10px 0; margin-bottom: 5px; border-bottom: 1px solid #dee2e6; font-size: 15px; color: #868e96; }
-  .category-nav a { text-decoration: none; color: #868e96; font-weight: 500; padding-bottom: 10px; position: relative; }
-  .category-nav a:hover { color: #495057; }
-  .category-nav a.active { color: #212529; font-weight: 700; border-bottom: 2px solid #212529; }
-  .category-divider { color: #dee2e6; font-weight: 300; }
+  .search-input {
+    padding: 0 12px;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    width: 300px;
+    height: 40px;
+    box-sizing: border-box;
+    font-size: 14px;
+  }
+
+  .btn-search {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    height: 40px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  .btn-search:hover {
+    background-color: #5c636a;
+  }
+
+  /* 페이지네이션 스타일 */
+  .pagination {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .pagination a {
+    text-decoration: none;
+    color: #495057;
+    padding: 5px 10px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    background: white;
+  }
+
+  .pagination a:hover {
+    background-color: #f1f3f5;
+  }
+
+  .current-page {
+    font-weight: 700;
+    color: #0d6efd;
+  }
+
+  /* 카테고리 탭 스타일 */
+  .category-nav {
+    display: flex;
+    gap: 15px;
+    padding: 10px 0;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #dee2e6;
+    font-size: 15px;
+    color: #868e96;
+  }
+
+  .category-nav a {
+    text-decoration: none;
+    color: #868e96;
+    font-weight: 500;
+    padding-bottom: 10px;
+    position: relative;
+  }
+
+  .category-nav a:hover {
+    color: #495057;
+  }
+
+  .category-nav a.active {
+    color: #212529;
+    font-weight: 700;
+    border-bottom: 2px solid #212529;
+  }
+
+  .category-divider {
+    color: #dee2e6;
+    font-weight: 300;
+  }
 </style>
 {% endblock %}
 
@@ -74,7 +218,6 @@
 
 <section class="hero">
   <div class="hero-inner">
-    <h1 class="hero-title">커뮤니티</h1>
   </div>
 </section>
 
@@ -95,8 +238,7 @@
       자유롭게 질문하고 토론하는 공간입니다.
     </p>
 
-    <div style="text-align: right; margin-bottom: 15px;">
-      {% if request.user.is_authenticated %}
+    <div style="text-align: right; margin-bottom: 15px; height: 45px;"> {% if request.user.is_authenticated %}
 
         {% if filter_mode == 'my' %}
           <a href="?board={{ board_type }}" class="btn-my-post active">
@@ -157,6 +299,8 @@
                 작성한 게시글이 없습니다.
               {% elif q %}
                 '{{ q }}' 검색 결과가 없습니다.
+              {% elif board_type %}
+                 해당 분류에 등록된 게시글이 없습니다.
               {% else %}
                 등록된 게시글이 없습니다.
               {% endif %}
@@ -177,11 +321,9 @@
       {% if posts.has_previous %}
         <a href="?page={{ posts.previous_page_number }}{% if q %}&q={{ q }}{% endif %}{% if board_type %}&board={{ board_type }}{% endif %}{% if filter_mode %}&filter={{ filter_mode }}{% endif %}">&laquo; 이전</a>
       {% endif %}
-
       <span class="current-page">
         Page {{ posts.number }} of {{ posts.paginator.num_pages }}
       </span>
-
       {% if posts.has_next %}
         <a href="?page={{ posts.next_page_number }}{% if q %}&q={{ q }}{% endif %}{% if board_type %}&board={{ board_type }}{% endif %}{% if filter_mode %}&filter={{ filter_mode }}{% endif %}">다음 &raquo;</a>
       {% endif %}

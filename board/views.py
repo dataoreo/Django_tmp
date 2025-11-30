@@ -217,6 +217,25 @@ def comment_create(request, post_id):
             comment = form.save(commit=False)
             comment.author = request.user
             comment.post = post
+
+            parent_id = request.POST.get('parent_id')
+            if parent_id:
+                parent_comment = get_object_or_404(CommunityComment, pk=parent_id)
+                comment.parent = parent_comment
+
             comment.save()
 
     return redirect('board:community_detail', post_id=post.post_id)
+
+@login_required
+def comment_delete(request, comment_id):
+    comment = get_object_or_404(CommunityComment, pk=comment_id)
+
+    post_id = comment.post.post_id
+
+    if request.user == comment.author or request.user.is_manager():
+        comment.delete()
+    else:
+        return redirect('board:community_detail', post_id=post_id)
+
+    return redirect('board:community_detail', post_id=post_id)
