@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ post.post_title }} | DORO LMS{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-inner">
+    <h1 class="hero-title">자유게시판</h1>
+  </div>
+</section>
+
+<main class="card-wrap">
+  <div class="card-inner">
+
+    <article style="max-width: 900px; margin: 0 auto;">
+
+      <header style="border-bottom: 2px solid #dee2e6; padding-bottom: 20px; margin-bottom: 20px;">
+        <h2 style="margin: 10px 0; font-size: 24px; font-weight: 600;">
+          {% if not post.open %}
+            <span style="color: #dc3545; font-size: 0.8em; vertical-align: middle;">🔒</span>
+          {% endif %}
+          {{ post.post_title }}
+        </h2>
+
+        <div style="display: flex; gap: 20px; color: #6c757d; font-size: 14px; margin-top: 15px;">
+          <span>👤 {{ post.author.name }}</span>
+          <span>📅 {{ post.created_at|date:"Y년 m월 d일 H:i" }}</span>
+          <span>👁️ 조회수 {{ post.view }}</span>
+        </div>
+      </header>
+
+      <div style="line-height: 1.8; padding: 30px 0; min-height: 200px; white-space: pre-wrap;">
+        {{ post.content }}
+      </div>
+
+      <div style="border-bottom: 1px solid #dee2e6; padding-bottom: 20px; margin-bottom: 40px; display: flex; justify-content: space-between; align-items: center;">
+        <a href="{% url 'board:community_list' %}" style="display: inline-block; padding: 8px 16px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 5px; font-size: 14px;">
+          ← 목록으로
+        </a>
+
+        <div style="display: flex; gap: 8px;">
+          {% if request.user == post.author %}
+          <a href="{% url 'board:community_update' post.post_id %}" style="display: inline-block; padding: 8px 16px; background-color: #0d6efd; color: white; text-decoration: none; border-radius: 5px; font-size: 14px;">
+            ✏️ 수정
+          </a>
+          {% endif %}
+
+          {% if request.user == post.author or request.user.is_manager %}
+          <a href="{% url 'board:community_delete' post.post_id %}" style="display: inline-block; padding: 8px 16px; background-color: #dc3545; color: white; text-decoration: none; border-radius: 5px; font-size: 14px;">
+            🗑️ 삭제
+          </a>
+          {% endif %}
+        </div>
+      </div>
+
+      <section class="comment-section" style="margin-top: 40px;">
+        <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 15px;">
+          댓글 <span style="color: #0d6efd;">{{ post.communitycomment_set.count }}</span>
+        </h3>
+
+        <ul style="list-style: none; padding: 0; margin-bottom: 30px;">
+          {% for comment in post.communitycomment_set.all %}
+          <li style="border-bottom: 1px solid #f1f3f5; padding: 15px 0;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+              <strong style="font-size: 14px; color: #212529;">{{ comment.author.name }}</strong>
+              <span style="font-size: 12px; color: #868e96;">{{ comment.created_at|date:"Y-m-d H:i" }}</span>
+            </div>
+            <div style="white-space: pre-wrap; color: #495057; font-size: 14px;">{{ comment.comment_content }}</div>
+          </li>
+          {% empty %}
+          <li style="padding: 20px 0; text-align: center; color: #868e96;">작성된 댓글이 없습니다. 첫 댓글을 남겨보세요!</li>
+          {% endfor %}
+        </ul>
+
+        {% if request.user.is_authenticated %}
+        <form action="{% url 'board:comment_create' post.post_id %}" method="post" style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+          {% csrf_token %}
+          <div style="display: flex; gap: 10px;">
+            <textarea name="comment_content" required placeholder="댓글을 입력하세요." style="flex: 1; height: 60px; padding: 10px; border: 1px solid #dee2e6; border-radius: 5px; resize: none;"></textarea>
+            <button type="submit" style="width: 80px; background-color: #495057; color: white; border: none; border-radius: 5px; cursor: pointer;">등록</button>
+          </div>
+        </form>
+        {% else %}
+        <div style="background: #f8f9fa; padding: 20px; text-align: center; border-radius: 8px; color: #868e96;">
+          댓글을 작성하려면 <a href="{% url 'user:login' %}" style="color: #0d6efd; text-decoration: underline;">로그인</a>이 필요합니다.
+        </div>
+        {% endif %}
+      </section>
+
+    </article>
+
+  </div>
+</main>
+{% endblock %}

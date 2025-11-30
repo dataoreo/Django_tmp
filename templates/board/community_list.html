@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}커뮤니티 | DORO LMS{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* 기존 스타일 유지 */
+  .notice-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+  .notice-table thead tr { background-color: #f8f9fa; border-bottom: 2px solid #dee2e6; }
+  .notice-table th { padding: 12px; text-align: center; font-weight: 600; color: #495057; }
+  .notice-table td { padding: 12px; border-bottom: 1px solid #dee2e6; }
+  .notice-table tbody tr:hover { background-color: #f8f9fa; }
+  .notice-title { text-decoration: none; color: #212529; font-weight: 500; }
+  .notice-title:hover { color: #0d6efd; }
+
+  /* 버튼 스타일 */
+  .btn-write {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #0d6efd;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 14px;
+  }
+  .btn-write:hover { background-color: #0b5ed7; }
+
+  /* 👇 [추가됨] 내 게시글 버튼 스타일 (회색) */
+  .btn-my-post {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #6c757d; /* 회색 */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 14px;
+    margin-right: 5px; /* 작성 버튼과의 간격 */
+  }
+  .btn-my-post:hover { background-color: #5c636a; }
+
+  /* 활성화된 내 게시글 버튼 (진하게 표시) */
+  .btn-my-post.active {
+    background-color: #495057;
+    border: 2px solid #212529;
+  }
+
+  /* 태그(분류) 뱃지 스타일 */
+  .board-tag { display: inline-block; background-color: #e9ecef; color: #495057; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+
+  /* 검색창, 페이지네이션, 탭 스타일 등 기존 코드 유지... */
+  .search-container { margin-top: 40px; display: flex; justify-content: center; }
+  .search-form { display: flex; flex-direction: row; align-items: center; gap: 5px; flex-wrap: nowrap; }
+  .search-input { padding: 0 12px; border: 1px solid #dee2e6; border-radius: 5px; width: 300px; height: 40px; box-sizing: border-box; font-size: 14px; }
+  .btn-search { display: inline-flex; align-items: center; justify-content: center; padding: 0 20px; height: 40px; background-color: #6c757d; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; white-space: nowrap; }
+  .btn-search:hover { background-color: #5c636a; }
+
+  .pagination { margin-top: 30px; display: flex; justify-content: center; align-items: center; gap: 10px; }
+  .pagination a { text-decoration: none; color: #495057; padding: 5px 10px; border: 1px solid #dee2e6; border-radius: 4px; background: white; }
+  .pagination a:hover { background-color: #f1f3f5; }
+  .current-page { font-weight: 700; color: #0d6efd; }
+
+  .category-nav { display: flex; gap: 15px; padding: 10px 0; margin-bottom: 5px; border-bottom: 1px solid #dee2e6; font-size: 15px; color: #868e96; }
+  .category-nav a { text-decoration: none; color: #868e96; font-weight: 500; padding-bottom: 10px; position: relative; }
+  .category-nav a:hover { color: #495057; }
+  .category-nav a.active { color: #212529; font-weight: 700; border-bottom: 2px solid #212529; }
+  .category-divider { color: #dee2e6; font-weight: 300; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+  <div class="hero-inner">
+    <h1 class="hero-title">커뮤니티</h1>
+  </div>
+</section>
+
+<main class="card-wrap">
+  <div class="card-inner">
+
+    <nav class="category-nav">
+      <a href="?board=&q={{ q }}{% if filter_mode %}&filter={{ filter_mode }}{% endif %}" class="{% if not board_type %}active{% endif %}">전체</a>
+      <span class="category-divider">|</span>
+      <a href="?board=free&q={{ q }}{% if filter_mode %}&filter={{ filter_mode }}{% endif %}" class="{% if board_type == 'free' %}active{% endif %}">자유</a>
+      <span class="category-divider">|</span>
+      <a href="?board=qna&q={{ q }}{% if filter_mode %}&filter={{ filter_mode }}{% endif %}" class="{% if board_type == 'qna' %}active{% endif %}">질문</a>
+      <span class="category-divider">|</span>
+      <a href="?board=discussion&q={{ q }}{% if filter_mode %}&filter={{ filter_mode }}{% endif %}" class="{% if board_type == 'discussion' %}active{% endif %}">토론</a>
+    </nav>
+
+    <p style="color: #6c757d; font-size: 14px; margin-top: 10px; margin-bottom: 20px;">
+      자유롭게 질문하고 토론하는 공간입니다.
+    </p>
+
+    <div style="text-align: right; margin-bottom: 15px;">
+      {% if request.user.is_authenticated %}
+
+        {% if filter_mode == 'my' %}
+          <a href="?board={{ board_type }}" class="btn-my-post active">
+            📋 전체 글 보기
+          </a>
+        {% else %}
+          <a href="?filter=my&board={{ board_type }}" class="btn-my-post">
+            👤 내 게시글
+          </a>
+        {% endif %}
+
+        <a href="{% url 'board:community_create' %}" class="btn-write">
+          ✏️ 게시글 작성
+        </a>
+      {% endif %}
+    </div>
+
+    <table class="notice-table">
+      <thead>
+        <tr>
+          <th style="width: 60px;">번호</th>
+          <th style="width: 100px;">분류</th>
+          <th style="text-align: left;">제목</th>
+          <th style="width: 120px;">작성자</th>
+          <th style="width: 120px;">작성일</th>
+          <th style="width: 80px;">조회수</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for post in posts %}
+        <tr>
+          <td style="text-align: center;">{{ post.number }}</td>
+          <td style="text-align: center;">
+            <span class="board-tag">
+              {{ post.get_board_display|default:post.board }}
+            </span>
+          </td>
+          <td>
+            <a href="{% url 'board:community_detail' post.post_id %}" class="notice-title">
+              {{ post.post_title }}
+              {% if post.communitycomment_set.count > 0 %}
+                <span style="color: #0d6efd; font-size: 0.9em; font-weight: bold;">
+                  [{{ post.communitycomment_set.count }}]
+                </span>
+              {% endif %}
+            </a>
+          </td>
+          <td style="text-align: center;">{{ post.author.name }}</td>
+          <td style="text-align: center;">{{ post.created_at|date:"Y-m-d" }}</td>
+          <td style="text-align: center;">{{ post.view }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="6" style="padding: 50px; text-align: center; color: #6c757d;">
+            <p style="font-size: 24px; margin-bottom: 10px;">🔍</p>
+            <p>
+              {% if filter_mode == 'my' %}
+                작성한 게시글이 없습니다.
+              {% elif q %}
+                '{{ q }}' 검색 결과가 없습니다.
+              {% else %}
+                등록된 게시글이 없습니다.
+              {% endif %}
+            </p>
+            {% if request.user.is_authenticated and filter_mode != 'my' %}
+              <p style="margin-top: 15px;">
+                <a href="{% url 'board:community_create' %}" class="btn-write">첫 게시글 작성하기</a>
+              </p>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    {% if posts.paginator.num_pages > 1 %}
+    <div class="pagination">
+      {% if posts.has_previous %}
+        <a href="?page={{ posts.previous_page_number }}{% if q %}&q={{ q }}{% endif %}{% if board_type %}&board={{ board_type }}{% endif %}{% if filter_mode %}&filter={{ filter_mode }}{% endif %}">&laquo; 이전</a>
+      {% endif %}
+
+      <span class="current-page">
+        Page {{ posts.number }} of {{ posts.paginator.num_pages }}
+      </span>
+
+      {% if posts.has_next %}
+        <a href="?page={{ posts.next_page_number }}{% if q %}&q={{ q }}{% endif %}{% if board_type %}&board={{ board_type }}{% endif %}{% if filter_mode %}&filter={{ filter_mode }}{% endif %}">다음 &raquo;</a>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    <div class="search-container">
+      <form method="get" action="{% url 'board:community_list' %}" class="search-form">
+        <input type="hidden" name="board" value="{{ board_type|default:'' }}">
+
+        {% if filter_mode %}
+          <input type="hidden" name="filter" value="{{ filter_mode }}">
+        {% endif %}
+
+        <input type="text" name="q" class="search-input"
+               value="{{ q|default:'' }}"
+               placeholder="제목, 내용, 작성자 검색">
+        <button type="submit" class="btn-search">검색</button>
+      </form>
+    </div>
+
+  </div>
+</main>
+{% endblock %}

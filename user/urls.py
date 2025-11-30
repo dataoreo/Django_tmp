@@ -28,7 +28,6 @@ urlpatterns = [
     path('DIMC', views.DIMC_view, name='DIMC'),
     path('DIMC_archive', views.DIMC_archive_view, name='DIMC_archive'),
 
-    path('community/', views.community_view, name='community' ),
     path('course/', views.dashboard_view, name='dashboard' ),
     path('calendar/', views.calendar_view, name='main_calendar'),
     path('course/info/<int:class_id>', views.lecture_info_view, name='lecture_info'),

@@ -245,12 +245,6 @@ def DIMC_archive_view(request):
 def DIMC_view(request):
     return render(request, 'user/DIMC.html')
 
-
-@login_required
-def community_view(request):
-    return render(request, 'user/community.html')
-
-
 @login_required
 def courses_view(request):
     return render(request, 'user/courses.html')

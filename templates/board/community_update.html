@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}게시글 수정 | DORO LMS{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-inner">
+    <h1 class="hero-title">게시글 수정</h1>
+  </div>
+</section>
+
+<main class="card-wrap">
+  <div class="card-inner">
+    <form method="post" style="max-width: 800px; margin: 0 auto;">
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+        <div style="background: #ffe6e6; color: #dc3545; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+          {{ form.non_field_errors }}
+        </div>
+      {% endif %}
+
+      <div style="margin-bottom: 20px;">
+        <label style="display: block; margin-bottom: 8px; font-weight: 600;">{{ form.board.label }}</label>
+        {{ form.board }}
+        {% if form.board.errors %}
+          <p style="color: #dc3545; font-size: 14px; margin-top: 5px;">{{ form.board.errors }}</p>
+        {% endif %}
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <label style="display: block; margin-bottom: 8px; font-weight: 600;">제목</label>
+        {{ form.post_title }}
+        {% if form.post_title.errors %}
+          <p style="color: #dc3545; font-size: 14px; margin-top: 5px;">{{ form.post_title.errors }}</p>
+        {% endif %}
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <label style="display: block; margin-bottom: 8px; font-weight: 600;">내용</label>
+        {{ form.content }}
+        {% if form.content.errors %}
+          <p style="color: #dc3545; font-size: 14px; margin-top: 5px;">{{ form.content.errors }}</p>
+        {% endif %}
+      </div>
+
+      <div style="margin-bottom: 30px;">
+        <label style="display: flex; align-items: center; gap: 8px;">
+          {{ form.open }}
+          <span>공개 설정</span>
+        </label>
+      </div>
+
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <a href="{% url 'board:community_detail' post.post_id %}" style="display: inline-block; padding: 10px 20px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 5px;">
+          취소
+        </a>
+        <button type="submit" style="padding: 10px 20px; background-color: #0d6efd; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: 500;">
+          수정하기
+        </button>
+      </div>
+    </form>
+  </div>
+</main>
+{% endblock %}

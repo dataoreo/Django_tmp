@@ -35,7 +35,8 @@
 
         <a href="{% url 'user:mypage' %}">마이페이지</a>
 
-        <a href="{% url 'user:community' %}">커뮤니티</a>
+        <!-- 수정됨: user:community -> board:community_list -->
+        <a href="{% url 'board:community_list' %}">커뮤니티</a>
         <a href="{% url 'user:courses' %}">내 강의실</a>
 
         <a href="/support/">고객지원</a>
