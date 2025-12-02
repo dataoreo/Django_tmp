@@ -33,50 +33,31 @@
     </main>
   </div>
 
-  {# ✅ 우측 고정 고객지원 배너 #}
-  {% block support_banner %}
-  <aside class="support-banner" aria-label="고객지원 배너">
-
-    <button type="button"
-            class="support-banner__item"
-            onclick="openChatbot(event)">
-      <span class="support-banner__icon support-banner__icon--chat" aria-hidden="true"></span>
-      <span class="support-banner__label">챗봇<br>바로가기</span>
-    </button>
-
-    <button type="button" class="support-banner__item">
-      <span class="support-banner__icon support-banner__icon--phone" aria-hidden="true"></span>
-      <span class="support-banner__label">상담 전화<br>바로가기</span>
-    </button>
-
-    <button type="button" class="support-banner__item">
-      <span class="support-banner__icon support-banner__icon--qna" aria-hidden="true"></span>
-      <span class="support-banner__label">1:1 문의<br>바로가기</span>
-    </button>
-  </aside>
-  {% endblock %}
-
+  {# ❌ 우측 고정 고객지원 배너 블록은 제거되었습니다. #}
 
   <script>
-      function openChatbot(event) {
-          // 버튼의 기본 동작 방지 (<a> 태그를 사용했을 경우 페이지 이동 방지)
+      /**
+       * 고객지원 페이지를 팝업 창으로 엽니다.
+       */
+      function openSupportPopup(event) {
+          // 기본 동작(페이지 이동) 방지
           if (event) {
               event.preventDefault();
           }
 
           // 팝업 창 크기 및 위치 설정
-          const width = 420;
-          const height = 620;
+          const width = 800;
+          const height = 700;
 
           // 화면 중앙 좌표 계산
           const left = (window.screen.width / 2) - (width / 2);
           const top = (window.screen.height / 2) - (height / 2);
 
-          // 새 창(팝업)으로 챗봇 열기. URL은 /support/chatbot/ 경로를 사용합니다.
+          // 새 창(팝업)으로 고객지원 페이지 열기.
           window.open(
-              '/support/chatbot/',
-              'DoroChatbot',
-              `width=${width},height=${height},top=${top},left=${left},resizable=no,scrollbars=no`
+              '/support/', // 고객지원 페이지 URL
+              'DoroSupport',
+              `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes`
           );
       }
   </script>

@@ -39,7 +39,7 @@
         <a href="{% url 'board:community_list' %}">커뮤니티</a>
         <a href="{% url 'user:courses' %}">내 강의실</a>
 
-        <a href="/support/">고객지원</a>
+        <a href="/support/" onclick="openSupportPopup(event)">고객지원</a>
       <a href="#" onclick="window.open('https://dimctest.com/', '_blank'); window.location.href='{% url 'user:DIMC' %}'; return false;">DIMC진단</a>
     </nav>
   </div>
