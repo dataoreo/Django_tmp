@@ -8,7 +8,14 @@
 }
 
 /* ===== 헤더 래퍼: 유동폭 + 내부 1440 컨테이너 ===== */
-#mp-header{ width:100%; position:relative; background:#fff; }
+#mp-header{
+  width:100%;
+  background:#fff;
+  /* 🌟 고정 기능 추가 */
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+}
 #mp-header .mp-inner{
   position:relative;
   max-width:1440px;   /* 원본 1440폭 유지 */

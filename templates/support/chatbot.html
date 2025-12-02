@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DORO 고객지원</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            /* 파란색 테마 유지 */
+            --primary-color: #2563eb;
+            --primary-light: #eff6ff;
+            --bg-color: #e0f2fe;
+            --chat-bg: #ffffff;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .chatbot-container {
+            width: 400px;
+            height: 600px;
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #dbeafe;
+        }
+
+        .chatbot-header {
+            padding: 18px 20px;
+            background: var(--primary-color);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .chatbot-header h2 {
+            font-size: 1.1rem;
+            margin: 0;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chatbox {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: var(--chat-bg);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            scroll-behavior: smooth;
+        }
+
+        .chatbox::-webkit-scrollbar { width: 6px; }
+        .chatbox::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+        .chat { display: flex; list-style: none; }
+        .chat.incoming { justify-content: flex-start; }
+        .chat.outgoing { justify-content: flex-end; }
+
+        .chat.incoming .icon {
+            width: 35px;
+            height: 35px;
+            background: var(--primary-color);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .chat.incoming p {
+            color: #333;
+            background: #f1f5f9;
+            border-radius: 0 15px 15px 15px;
+            padding: 12px 16px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            max-width: 80%;
+            white-space: pre-line;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .chat.outgoing p {
+            background: var(--primary-color);
+            color: #fff;
+            border-radius: 15px 15px 0 15px;
+            padding: 12px 16px;
+            font-size: 0.95rem;
+            max-width: 80%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 5px;
+            margin-left: 45px;
+        }
+
+        .option-btn {
+            background: #fff;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            padding: 10px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-align: left;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+
+        .option-btn:hover {
+            background: var(--primary-light);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(37, 99, 235, 0.1);
+        }
+
+        /* '없습니다' 버튼 전용 스타일 (약간 회색조로 구별) */
+        .option-btn.exit-btn {
+            border-color: #94a3b8;
+            color: #64748b;
+        }
+        .option-btn.exit-btn:hover {
+            background-color: #f1f5f9;
+            color: #334155;
+        }
+
+        .typing-indicator {
+            display: none;
+            margin-left: 10px;
+        }
+        .typing-bubble {
+            background: #f1f5f9;
+            padding: 10px 15px;
+            border-radius: 0 15px 15px 15px;
+            display: flex;
+            gap: 4px;
+            width: fit-content;
+        }
+        .dot {
+            width: 6px;
+            height: 6px;
+            background: #94a3b8;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .dot:nth-child(1) { animation-delay: -0.32s; }
+        .dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="chatbot-container">
+        <div class="chatbot-header">
+            <h2><i class="fa-solid fa-headset"></i> DORO 고객지원</h2>
+        </div>
+
+        <ul class="chatbox" id="chatbox">
+            <li class="chat incoming">
+                <div class="icon"><i class="fa-solid fa-robot"></i></div>
+                <p>안녕하세요! DORO 학습매니저입니다. 🦈<br>무엇을 도와드릴까요?</p>
+            </li>
+
+            <li class="chat incoming typing-indicator" id="typing">
+                <div class="icon"><i class="fa-solid fa-robot"></i></div>
+                <div class="typing-bubble">
+                    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+<script>
+    const chatbox = document.getElementById("chatbox");
+    const typingIndicator = document.getElementById("typing");
+
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => fetchNextStep(null), 600);
+    });
+
+    function addMessage(type, text) {
+        const li = document.createElement("li");
+        li.classList.add("chat", type);
+
+        let content = "";
+        if(type === "incoming") {
+            content = `<div class="icon"><i class="fa-solid fa-robot"></i></div><p>${text}</p>`;
+        } else {
+            content = `<p>${text}</p>`;
+        }
+
+        li.innerHTML = content;
+        chatbox.insertBefore(li, typingIndicator);
+        scrollToBottom();
+    }
+
+    function addOptions(options, type) {
+        const div = document.createElement("div");
+        div.className = "options-grid";
+
+        options.forEach(opt => {
+            const btn = document.createElement("button");
+
+            // "없습니다" 버튼인지 확인 (ID로 구분)
+            const isExit = opt.id === 'EXIT_BOT';
+            btn.className = isExit ? "option-btn exit-btn" : "option-btn";
+
+            // 아이콘 설정
+            let icon;
+            if (isExit) icon = '<i class="fa-solid fa-xmark"></i>'; // 닫기 아이콘
+            else if (type === 'category') icon = '<i class="fa-regular fa-folder-open"></i>';
+            else icon = '<i class="fa-regular fa-circle-question"></i>';
+
+            const text = type === 'category' ? opt.name : opt.question;
+            btn.innerHTML = `${icon} ${text}`;
+
+            btn.onclick = () => {
+                // 1. 유저 선택 표시
+                addMessage("outgoing", text);
+
+                // 2. 버튼 비활성화 및 목록 제거
+                const allBtns = document.querySelectorAll(".option-btn");
+                allBtns.forEach(b => {
+                    b.style.pointerEvents = "none";
+                    b.style.opacity = "0.6";
+                });
+                div.remove();
+
+                // 3. "없습니다" 클릭 시 -> 종료 멘트 후 로직 중단
+                if (isExit) {
+                    showTyping();
+                    setTimeout(() => {
+                        hideTyping();
+                        addMessage("incoming", "감사합니다. 오늘도 좋은 하루 되세요! 🍀");
+                    }, 600);
+                    return;
+                }
+
+                // 4. 일반 버튼 클릭 시 -> 다음 단계 로딩
+                showTyping();
+
+                if (type === 'category') {
+                    fetchNextStep(opt.id);
+                } else {
+                    setTimeout(() => {
+                        hideTyping();
+                        addMessage("incoming", opt.answer);
+
+                        setTimeout(() => {
+                            showTyping();
+                            setTimeout(() => {
+                                fetchNextStep(null, "더 궁금한 점이 있으신가요? 👇");
+                            }, 800);
+                        }, 1200);
+
+                    }, 600);
+                }
+            };
+            div.appendChild(btn);
+        });
+
+        chatbox.insertBefore(div, typingIndicator);
+        scrollToBottom();
+    }
+
+    function fetchNextStep(parentId, customMessage = null) {
+        showTyping();
+
+        let url = `/support/api/chatbot/?`;
+        if (parentId) url += `parent_id=${parentId}`;
+
+        fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                setTimeout(() => {
+                    hideTyping();
+                    if (data.data && data.data.length > 0) {
+                        const msg = customMessage || data.message || "항목을 선택해주세요.";
+                        addMessage("incoming", msg);
+
+                        // ✨ [수정됨] 데이터 목록 맨 끝에 '없습니다' 수동 추가
+                        const optionsWithExit = [...data.data, {
+                            id: 'EXIT_BOT', // 식별자
+                            name: '없습니다',
+                            question: '없습니다'
+                        }];
+
+                        addOptions(optionsWithExit, data.type);
+
+                    } else if (data.type === 'empty') {
+                        addMessage("incoming", "내용이 없습니다. 😅");
+                        setTimeout(() => fetchNextStep(null, "다른 메뉴를 선택해주세요."), 1500);
+                    }
+                }, 500);
+            })
+            .catch(err => {
+                hideTyping();
+                console.error(err);
+                addMessage("incoming", "오류가 발생했습니다.");
+            });
+    }
+
+    function scrollToBottom() {
+        chatbox.scrollTop = chatbox.scrollHeight;
+    }
+
+    function showTyping() {
+        typingIndicator.style.display = "flex";
+        scrollToBottom();
+    }
+    function hideTyping() {
+        typingIndicator.style.display = "none";
+    }
+</script>
+
+</body>
+</html>

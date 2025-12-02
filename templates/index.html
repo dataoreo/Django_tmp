@@ -8,7 +8,6 @@
 {% endblock %}
 
 {% block content %}
-  <!-- 상단 히어로 -->
   <section class="hero-banner">
     <div class="hero-inner">
       <h1 class="hero-title">당신의 학습을 위한<br><span>DORO LMS</span></h1>
@@ -16,10 +15,8 @@
     </div>
   </section>
 
-  <!-- 콘텐츠 메인 영역 -->
   <main class="main-content container">
 
-    <!-- AI 강의추천 -->
     <section class="card ai-section">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
         <h2 class="card-title" style="margin: 0;">🎓 최신 강의</h2>
@@ -66,7 +63,6 @@
       </div>
     </section>
 
-    <!-- 공지사항 -->
     <section class="card notice-section">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
         <h2 class="card-title" style="margin: 0;">📢 공지사항</h2>
@@ -116,4 +112,61 @@
     </section>
 
   </main>
-{% endblock %}
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+  <div class="support-fab" onclick="openChatbot()">
+      <i class="fa-solid fa-headset"></i>
+      <span>고객지원</span>
+  </div>
+
+  <style>
+      /* 버튼 스타일 */
+      .support-fab {
+          position: fixed;
+          bottom: 30px;
+          right: 30px;
+          background-color: #2563eb; /* 챗봇 테마 파란색 */
+          color: white;
+          padding: 12px 24px;
+          border-radius: 50px;
+          box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          font-weight: bold;
+          font-family: -apple-system, sans-serif;
+          transition: transform 0.2s, background-color 0.2s;
+          z-index: 9999; /* 다른 요소보다 항상 위에 */
+      }
+
+      .support-fab:hover {
+          background-color: #1d4ed8;
+          transform: translateY(-2px);
+      }
+
+      .support-fab i {
+          font-size: 20px;
+      }
+  </style>
+
+  <script>
+      function openChatbot() {
+          // 챗봇 화면 크기 설정 (챗봇 UI에 맞춤)
+          const width = 420;
+          const height = 620;
+
+          // 화면 중앙 좌표 계산
+          const left = (window.screen.width / 2) - (width / 2);
+          const top = (window.screen.height / 2) - (height / 2);
+
+          // 새 창(팝업)으로 챗봇 열기
+          window.open(
+              '/support/chatbot/',
+              'DoroChatbot',
+              `width=${width},height=${height},top=${top},left=${left},resizable=no,scrollbars=no`
+          );
+      }
+  </script>
+  {% endblock %}

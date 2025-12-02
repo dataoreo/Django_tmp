@@ -33,6 +33,7 @@ urlpatterns = [
     path('chat/', include('chat.urls')),
     path('board/', include('board.urls')),
     path('course/', include('course.urls')),
+    path('support/', include('support.urls')),
 ]
 
 # 개발 환경에서 미디어 파일을 서빙하기 위한 설정

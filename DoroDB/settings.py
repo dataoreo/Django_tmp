@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "chat",
     "course",
     "board",
+    "support",
 ]
 
 MIDDLEWARE = [
