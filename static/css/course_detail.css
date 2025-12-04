@@ -1,0 +1,188 @@
+/*
+ * =========================================
+ * course_detail.css (DORO LMS v1.0)
+ * 강의 상세 페이지
+ * =========================================
+ */
+
+:root {
+  --brand: #4C5CFF;
+  --brand-600: #3F4DE0;
+  --danger: #EF4444;
+  --danger-600: #DC2626;
+  --ink: #1F2937;
+  --ink-sub: #6B7280;
+  --line: #E5E7EB;
+  --bg: #F9FAFB;
+  --surface: #FFFFFF;
+  --shadow: 0 8px 24px rgba(17, 24, 39, 0.08);
+  --radius-card: 16px;
+  --radius-pill: 9999px;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: "Inter", "Noto Sans KR", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--ink);
+}
+
+/* Hero */
+.hero {
+  background: linear-gradient(180deg, #7ab8ff, #cfe6ff);
+  padding: 80px 0 100px;
+}
+.hero-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.hero-title {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+/* 카드 레이아웃 */
+.card-wrap {
+  margin: -56px auto 100px;
+}
+.card-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.course-detail-card {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 36px 34px 30px;
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow);
+}
+
+/* 상단 헤더 */
+.course-header {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 18px;
+  margin-bottom: 24px;
+}
+.course-title {
+  margin: 4px 0 16px 0;
+  font-size: 26px;
+  font-weight: 700;
+}
+.course-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  font-size: 14px;
+  color: var(--ink-sub);
+}
+.meta-item {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* 본문 */
+.course-body {
+  padding: 8px 0 24px;
+  min-height: 220px;
+}
+.course-description {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.8;
+  white-space: pre-wrap; /* 개행 유지 */
+}
+
+/* 푸터 */
+.course-footer {
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
+  margin-top: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.action-right {
+  display: flex;
+  gap: 8px;
+}
+
+/* 버튼 공통 */
+.btn-primary,
+.btn-secondary,
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 22px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+/* 홈 버튼 */
+.btn-secondary {
+  background: #e5e7eb;
+  color: #111827;
+}
+.btn-secondary:hover {
+  background: #d1d5db;
+}
+
+/* 수정 버튼 */
+.btn-primary {
+  background: var(--brand);
+  color: #ffffff;
+}
+.btn-primary:hover {
+  background: var(--brand-600);
+}
+
+/* 삭제 버튼 */
+.btn-danger {
+  background: var(--danger);
+  color: #ffffff;
+}
+.btn-danger:hover {
+  background: var(--danger-600);
+}
+
+.btn-sm {
+  padding: 8px 18px;
+  font-size: 14px;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .hero {
+    padding: 60px 0 80px;
+  }
+  .card-wrap {
+    margin-top: -40px;
+  }
+  .course-detail-card {
+    padding: 28px 20px 24px;
+  }
+  .course-meta {
+    flex-direction: column;
+    gap: 4px;
+  }
+  .course-footer {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+  .action-right {
+    justify-content: flex-end;
+  }
+}

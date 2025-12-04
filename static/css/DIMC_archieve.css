@@ -1,0 +1,153 @@
+/* mypage 변수 재선언 (혹시 로드 안될 경우 대비) */
+:root {
+    --btn-purple: #5651E9;
+    --ink: #000000;
+    --muted: #717070;
+    --line: #CBC6C6;
+}
+
+/* 박스 위치 및 크기 (mypage와 동일) */
+#infoBox {
+    position: absolute;
+    left: 490px;
+    top: 321px;
+    width: 685px;
+    /* 폼 길이에 따라 늘어나도록 min-height 설정 */
+    min-height: 600px;
+    height: auto !important; 
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding-bottom: 30px; /* 하단 여백 */
+}
+
+/* 1. 제목 스타일 (회원정보 처럼 굵게) */
+#archiveTitle {
+    position: absolute;
+    left: 29px;
+    top: 36px;
+    font-size: 24px;
+    color: var(--ink);
+    font-weight: 700; /* 굵게 강제 적용 */
+}
+
+/* 2. 설명글 스타일 (회색, 작은 글씨) */
+#archiveSub {
+    position: absolute;
+    left: 29px;
+    top: 79px;
+    width: 600px;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--muted);
+    text-align: left;
+}
+
+/* 3. 회색 패널 (폼 감싸는 박스) */
+#archivePanel {
+    position: relative; /* absolute 대신 relative로 변경하여 유동적으로 */
+    margin-top: 140px; /* 위쪽 제목/설명글 공간 확보 */
+    margin-left: 29px;
+    width: 625px;
+    background: rgba(229, 229, 229, 0.42);
+    border-radius: 10px;
+    padding: 25px;
+    box-sizing: border-box;
+}
+
+/* === 폼 내부 디자인 (줄 맞춤) === */
+
+/* Django form.as_p가 만드는 p태그 타겟팅 */
+#archivePanel p, 
+.file-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    width: 100%;
+}
+
+/* 라벨(D점수, I점수 등) 크기 고정 */
+#archivePanel label,
+.file-row label {
+    display: inline-block;
+    width: 120px; /* 라벨 너비 고정 */
+    font-size: 14px;
+    color: var(--ink);
+    font-weight: 500;
+    margin-right: 10px;
+}
+
+/* 입력창 디자인 */
+#archivePanel input[type="text"],
+#archivePanel input[type="number"],
+#archivePanel select {
+    flex: 1; /* 남은 공간 채우기 */
+    height: 36px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 0 10px;
+    font-size: 14px;
+    background: #fff;
+}
+
+/* 텍스트 영역 (테스트 결과) */
+#archivePanel textarea {
+    flex: 1;
+    height: 80px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    resize: none;
+    font-family: sans-serif;
+}
+
+/* 파일 업로드 줄 디자인 */
+.file-row {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px dashed #ccc; /* 구분선 */
+}
+
+.file-input-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.file-input-wrapper .tip {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 5px;
+}
+
+/* === 4. 버튼 디자인 (마이페이지 '수정' 버튼 스타일) === */
+#archiveActions {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.btn-purple {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 90px;
+    height: 40px;
+    padding: 0 20px;
+    
+    /* 마이페이지 수정 버튼 색상 */
+    background: var(--btn-purple);
+    border: 1px solid var(--btn-purple);
+    border-radius: 10px; /* 둥근 모서리 */
+    
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.btn-purple:hover {
+    opacity: 0.9;
+}

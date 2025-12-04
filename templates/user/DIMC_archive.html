@@ -1,65 +1,241 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8" />
-    <title>DIMC 아카이브 - 결과지 업로드</title>
-    <style>
-        /* 기본적인 레이아웃과 디자인 스타일 */
-        body { font-family: sans-serif; color: #333; margin: 0; background-color: #f8f9fa; }
-        .header { background-color: #fff; padding: 15px 30px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; }
-        .header .logo a { color: #0056b3; text-decoration: none; font-size: 1.5em; font-weight: bold; }
-        .header .user-info { color: #555; }
-        .page-title-bar { background-color: #3498db; color: white; padding: 30px; }
-        .page-title-bar h1 { margin: 0; font-size: 2em; }
-        .main-container { display: flex; max-width: 1200px; margin: 40px auto; gap: 30px; }
-        .side-menu { flex: 0 0 200px; background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); height: fit-content; }
-        .side-menu h2 { font-size: 1.2em; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        .side-menu ul { list-style: none; padding: 0; }
-        .side-menu ul li a { display: block; padding: 15px; text-decoration: none; color: #333; border-radius: 5px; }
-        .side-menu ul li a.active, .side-menu ul li a:hover { background-color: #e9ecef; }
-        .content-area { flex-grow: 1; }
-        .content-box { background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 30px; }
-        .content-box h3 { margin-top: 0; }
-        .btn { display: inline-block; padding: 8px 15px; border-radius: 5px; text-decoration: none; border: 1px solid transparent; cursor: pointer; }
-        .btn-primary { background-color: #007bff; color: white; border-color: #007bff; }
-        .btn-secondary { background-color: #6c757d; color: white; border-color: #6c757d; }
+{% extends "base.html" %}
+{% load static %}
 
-        .profile-section { text-align: center; margin-bottom: 20px; }
-        .profile-img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #eee; }
-        .profile-name { font-size: 1.3em; font-weight: bold; margin-top: 10px; }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <div class="logo"><a href="/">홈</a></div>
-        <div class="user-info">{{ user.name }}님 환영합니다.</div>
-    </div>
-    <div class="page-title-bar">
-        <h1>DIMC 아카이브</h1>
-    </div>
-    <div class="main-container">
-        <nav class="side-menu">
-            <h2>마이페이지 메뉴</h2>
-            <ul>
-                <li><a href="{% url 'user:mypage' %}">내정보</a></li>
-                <li><a href="{% url 'user:DIMC_archive' %}" class="active">DIMC 아카이브</a></li>
-                <!-- 다른 메뉴 항목들 추가 가능 -->
-            </ul>
-        </nav>
-        <section class="content-area">
-            <div class="content-box">
-                <h3>결과지 업로드</h3>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/mypage.css' %}?v=20251128_2">
 
-                <form method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit" class="btn btn-primary">저장하기</button>
-                    <input type="file" name="dimc_file" required>
-                    <br><br>
-                    <button type="submit" class="btn btn-primary">업로드</button>
-                </form>
-            </div>
-        </section>
-    </div>
-</body>
-</html>
+<style>
+    /* === 스타일 강제 적용 (Internal Style) === */
+
+    /* 1. 중앙 카드 박스 */
+    #infoBox {
+        position: absolute;
+        left: 490px;
+        top: 321px;
+        width: 685px;
+        /* 내용물만큼 늘어나도록 설정 */
+        height: auto;
+        background: #fff;
+        border: 1px solid #CBC6C6;
+        border-radius: 10px;
+        box-sizing: border-box;
+        padding-bottom: 50px;
+    }
+
+    /* 제목 스타일 */
+    #archiveTitle {
+        position: absolute;
+        left: 29px;
+        top: 36px;
+        font-size: 24px;
+        color: #000;
+        font-weight: bold;
+    }
+
+    /* 설명 문구 스타일 */
+    #archiveSub {
+        position: absolute;
+        left: 29px;
+        top: 79px;
+        width: 600px;
+        font-size: 14px;
+        line-height: 20px;
+        color: #717070;
+        text-align: left;
+    }
+
+    /* 회색 패널 (폼 영역) */
+    #archivePanel {
+        position: relative;
+        margin-top: 140px; 
+        margin-left: 29px;
+        width: 625px;
+        background: rgba(229, 229, 229, 0.42);
+        border-radius: 10px;
+        padding: 25px;
+        box-sizing: border-box;
+    }
+
+    /* === 폼 내부 디자인 === */
+    .form-row {
+        display: flex;
+        align-items: center; 
+        margin-bottom: 15px; 
+        width: 100%;
+    }
+
+    /* DIMC 라벨 디자인 (버튼 모양) */
+    .dimc-badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 130px; 
+        height: 36px; 
+        margin-right: 15px;
+        border-radius: 10px; 
+        color: white; 
+        font-weight: bold;
+        font-size: 14px;
+        box-sizing: border-box;
+        flex-shrink: 0; 
+    }
+
+    /* 각 알파벳별 색상 */
+    .badge-d { background-color: #4650D5; } 
+    .badge-i { background-color: #D96C75; } 
+    .badge-m { background-color: #DCE33D; color: #333; } 
+    .badge-c { background-color: #2A2A89; } 
+
+    /* 일반 라벨 (테스트 결과 등) */
+    .form-label {
+        display: inline-block;
+        width: 130px;
+        font-size: 14px;
+        color: #000;
+        font-weight: 500;
+        margin-right: 15px;
+        padding-left: 10px; 
+        box-sizing: border-box;
+    }
+
+    /* 입력창(숫자) 스타일 */
+    .form-input {
+        flex: 1; 
+        height: 36px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 0 10px;
+        font-size: 14px;
+        background: #fff;
+    }
+
+    /* 결과 입력창 (여러 줄) */
+    .form-textarea {
+        flex: 1;
+        height: 80px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        resize: none;
+        font-family: sans-serif;
+        font-size: 14px;
+    }
+
+    /* 파일 업로드 영역 스타일 */
+    .file-row {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px dashed #ccc;
+        display: flex;
+        align-items: flex-start;
+    }
+    
+    .file-group {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .file-tip {
+        font-size: 12px;
+        color: #717070;
+        margin-top: 5px;
+    }
+
+    /* 버튼 스타일 */
+    #archiveActions {
+        margin-top: 30px;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .btn-purple {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 90px;
+        height: 40px;
+        padding: 0 20px;
+        background: #5651E9;
+        border: 1px solid #5651E9;
+        border-radius: 10px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: opacity 0.2s;
+        border: none;
+    }
+
+    .btn-purple:hover {
+        opacity: 0.9;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="canvas" role="main">
+    <div id="bgMypage"></div>
+    <h1 id="pageTitle">DIMC 아카이브</h1>
+
+    <div id="menuTitle">메뉴</div>
+    <div id="menuBox"></div>
+    <div id="menuLine1"></div>
+    <div id="menuLine2"></div>
+    <a id="menuItem1" href="{% url 'user:mypage' %}">내 정보</a>
+    <a id="menuItem2" href="{% url 'user:dimc_results' %}">DIMC 진단결과</a>
+
+    <section id="infoBox">
+        <div id="archiveTitle">결과지 업로드</div>
+
+        <div id="archiveSub">
+            DIMC 진단 결과지를 업로드하여 아카이브에 보관할 수 있습니다.<br>
+            점수와 결과를 입력하고 파일을 선택한 뒤 저장해 주세요.
+        </div>
+
+        <div id="archivePanel">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="form-row">
+                    <label class="dimc-badge badge-d">D (Digital)</label>
+                    <input type="number" name="D_score" class="form-input" min="0" required>
+                </div>
+
+                <div class="form-row">
+                    <label class="dimc-badge badge-i">I (AI)</label>
+                    <input type="number" name="I_score" class="form-input" min="0" required>
+                </div>
+
+                <div class="form-row">
+                    <label class="dimc-badge badge-m">M (Making)</label>
+                    <input type="number" name="M_score" class="form-input" min="0" required>
+                </div>
+
+                <div class="form-row">
+                    <label class="dimc-badge badge-c">C (Computing)</label>
+                    <input type="number" name="C_score" class="form-input" min="0" required>
+                </div>
+
+                <div class="form-row">
+                    <label class="form-label">테스트 결과</label>
+                    <textarea name="result" class="form-textarea" placeholder="결과 내용을 입력하세요"></textarea>
+                </div>
+
+                <div class="file-row">
+                    <label class="form-label">파일 선택</label>
+                    <div class="file-group">
+                        <input type="file" name="pdf_path" required>
+                        <span class="file-tip">* PDF, JPG, PNG 파일 업로드 가능</span>
+                    </div>
+                </div>
+
+                <div id="archiveActions">
+                    <button type="submit" class="btn-purple">저장하기</button>
+                    <button type="submit" class="btn-purple">업로드</button>
+                </div>
+            </form>
+        </div>
+    </section>
+</div>
+{% endblock %}

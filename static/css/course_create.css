@@ -1,0 +1,211 @@
+/*
+ * =========================================
+ * course_create.css (DORO LMS v1.0)
+ * 강의 등록 폼
+ * =========================================
+ */
+
+:root {
+  --brand: #4C5CFF;
+  --brand-600: #3F4DE0;
+  --ink: #1F2937;
+  --ink-sub: #6B7280;
+  --line: #E5E7EB;
+  --bg: #F9FAFB;
+  --surface: #FFFFFF;
+  --shadow: 0 8px 24px rgba(17, 24, 39, 0.08);
+  --radius-card: 16px;
+  --radius-input: 10px;
+  --radius-pill: 9999px;
+}
+
+/* 기본 */
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: "Inter", "Noto Sans KR", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--ink);
+}
+
+/* Hero */
+.hero {
+  background: linear-gradient(180deg, #7ab8ff, #cfe6ff);
+  padding: 80px 0 100px;
+}
+.hero-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.hero-title {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+/* 카드 레이아웃 */
+.card-wrap {
+  margin: -56px auto 100px;
+}
+.card-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.course-card {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 36px 32px;
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow);
+}
+
+/* 제목 */
+.card-title {
+  margin: 0 0 28px 0;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: left;
+}
+
+/* 폼 그리드 */
+.course-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px 20px;
+}
+.col-2 {
+  grid-column: 1 / -1;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.field-inline {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* 라벨/입력 */
+label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.course-form input[type="text"],
+.course-form input[type="email"],
+.course-form textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-input);
+  padding: 10px 14px;
+  font-size: 15px;
+  background: var(--surface);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Textarea 높이 */
+.course-form textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+/* 포커스 */
+.course-form input:focus,
+.course-form textarea:focus {
+  border-color: var(--brand-600);
+  box-shadow: 0 0 0 3px rgba(76, 92, 255, 0.15);
+}
+
+/* 체크박스 라벨 */
+.checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+/* 에러 메시지 (Django errorlist) */
+.course-form .errorlist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #ef4444;
+}
+
+/* 전체 폼 에러 */
+.course-form > .errorlist {
+  margin-bottom: 8px;
+  padding: 10px 14px;
+  background: rgba(239, 68, 68, 0.04);
+  border: 1px solid #ef4444;
+  border-radius: var(--radius-input);
+}
+
+/* 버튼 영역 */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+/* 버튼 공통 */
+.btn-primary,
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 22px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+/* 취소 버튼 */
+.btn-secondary {
+  background: #e5e7eb;
+  color: #111827;
+}
+.btn-secondary:hover {
+  background: #d1d5db;
+}
+
+/* 등록하기 버튼 */
+.btn-primary {
+  background: var(--brand);
+  color: #ffffff;
+}
+.btn-primary:hover {
+  background: var(--brand-600);
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .hero {
+    padding: 60px 0 80px;
+  }
+  .card-wrap {
+    margin-top: -40px;
+  }
+  .course-card {
+    padding: 32px 24px 24px;
+  }
+  .course-form {
+    grid-template-columns: 1fr;
+  }
+}

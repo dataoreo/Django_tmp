@@ -1,0 +1,193 @@
+/*
+ * =========================================
+ * course_list.css (DORO LMS v1.0)
+ * 강의 목록 페이지
+ * =========================================
+ */
+
+:root {
+  --brand: #4C5CFF;
+  --brand-600: #3F4DE0;
+  --ink: #1F2937;
+  --ink-sub: #6B7280;
+  --line: #E5E7EB;
+  --bg: #F9FAFB;
+  --surface: #FFFFFF;
+  --shadow: 0 8px 24px rgba(17, 24, 39, 0.08);
+  --radius-card: 16px;
+  --radius-pill: 9999px;
+}
+
+/* 기본 */
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: "Inter", "Noto Sans KR", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--ink);
+}
+
+/* Hero */
+.hero {
+  background: linear-gradient(180deg, #7ab8ff, #cfe6ff);
+  padding: 80px 0 100px;
+}
+.hero-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.hero-title {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+/* 카드 레이아웃 */
+.card-wrap {
+  margin: -56px auto 100px;
+}
+.card-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.course-list-card {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 32px 28px;
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow);
+}
+
+/* 카드 헤더 */
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.card-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* 버튼 */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 22px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  background: var(--brand);
+  color: #ffffff;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.btn-primary:hover {
+  background: var(--brand-600);
+}
+.btn-sm {
+  padding: 8px 18px;
+  font-size: 14px;
+}
+
+/* 테이블 */
+.table-wrap {
+  overflow-x: auto;
+}
+.course-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 640px;
+}
+.course-table thead {
+  background: #f9fafb;
+  border-bottom: 1px solid var(--line);
+}
+.course-table th,
+.course-table td {
+  padding: 12px 10px;
+  font-size: 14px;
+}
+.course-table th {
+  text-align: center;
+  font-weight: 600;
+  color: #4b5563;
+}
+.col-title {
+  text-align: left;
+}
+.col-index,
+.col-instructor,
+.col-date,
+.col-views {
+  text-align: center;
+}
+
+/* 행 스타일 */
+.course-table tbody tr {
+  border-bottom: 1px solid #f3f4f6;
+  transition: background 0.15s ease;
+}
+.course-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+/* 강의 제목 링크 */
+.course-table a {
+  color: var(--ink);
+  font-weight: 500;
+  text-decoration: none;
+}
+.course-table a:hover {
+  text-decoration: underline;
+}
+
+/* 비어 있을 때 */
+.empty-state {
+  padding: 40px 20px 32px;
+  text-align: center;
+}
+.empty-state .emoji {
+  font-size: 28px;
+  margin-bottom: 6px;
+}
+.empty-title {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+.empty-desc {
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  color: var(--ink-sub);
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .hero {
+    padding: 60px 0 80px;
+  }
+  .card-wrap {
+    margin-top: -40px;
+  }
+  .course-list-card {
+    padding: 28px 20px 24px;
+  }
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .course-table {
+    min-width: 100%;
+  }
+}

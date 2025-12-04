@@ -1,0 +1,112 @@
+/*
+ * =========================================
+ * DIMC.css (DORO LMS 디자인 시스템 v1.0)
+ * =========================================
+ */
+
+:root {
+  --brand: #4C5CFF;
+  --brand-600: #3F4DE0;
+  --hero-top: #7AB8FF;
+  --hero-bot: #CFE6FF;
+  --ink: #1F2937;
+  --ink-sub: #6B7280;
+  --line: #E5E7EB;
+  --bg: #F9FAFB;
+  --surface: #FFFFFF;
+  --shadow: 0 8px 24px rgba(17, 24, 39, 0.08);
+  --radius-card: 16px;
+  --radius-pill: 9999px;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: "Inter", "Noto Sans KR", sans-serif;
+  color: var(--ink);
+}
+
+/* Hero */
+.hero {
+  background: linear-gradient(180deg, var(--hero-top), var(--hero-bot));
+  padding: 80px 0 100px;
+}
+.hero-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.hero-title {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  text-align: left;
+}
+
+/* Card Layout */
+.card-wrap {
+  margin: -56px auto 100px;
+}
+.card-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.dimc-card {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 40px 36px;
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow);
+  text-align: center;   /* 🔥 중앙 정렬 */
+}
+
+
+/* Card Title */
+.card-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 28px 0;
+}
+
+/* Description */
+.desc {
+  font-size: 16px;
+  color: var(--ink);
+  line-height: 1.65;
+  margin-bottom: 32px;
+  text-align: center;   /* 🔥 중앙 정렬 보강 */
+}
+/* CTA */
+.cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.btn-primary {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 280px;
+  height: 48px;
+  background: var(--brand);
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  transition: background .2s;
+}
+.btn-primary:hover {
+  background: var(--brand-600);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero { padding: 60px 0 80px; }
+  .card-wrap { margin-top: -40px; }
+  .dimc-card { padding: 32px 24px; }
+}

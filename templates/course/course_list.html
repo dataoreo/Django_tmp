@@ -3,6 +3,10 @@
 
 {% block title %}강의 목록 | DORO LMS{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/course_list.css' %}">
+{% endblock %}
+
 {% block content %}
 <section class="hero">
   <div class="hero-inner">
@@ -13,58 +17,67 @@
 <main class="card-wrap">
   <div class="card-inner">
 
-    <!-- 강사만 등록 버튼 -->
-    {% if request.user.is_authenticated %}
-      {% if request.user.role == "instructor" or request.user.role == "manager" %}
-      <div style="text-align: right; margin-bottom: 20px;">
-        <a href="{% url 'course:course_create' %}" style="display: inline-block; padding: 10px 20px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px; font-weight: 500;">
-          ➕ 강의 등록
-        </a>
+    <section class="course-list-card">
+      <div class="card-header">
+        <h2 class="card-title">강의 목록</h2>
+
+        {% if request.user.is_authenticated %}
+          {% if request.user.role == "instructor" or request.user.role == "manager" %}
+          <a href="{% url 'course:course_create' %}" class="btn-primary btn-sm">
+            ➕ 강의 등록
+          </a>
+          {% endif %}
+        {% endif %}
+      </div>
+
+      {% if courses %}
+      <!-- 강의 목록 테이블 -->
+      <div class="table-wrap">
+        <table class="course-table">
+          <thead>
+            <tr>
+              <th>번호</th>
+              <th>강의명</th>
+              <th>강사</th>
+              <th>등록일</th>
+              <th>조회수</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for course in courses %}
+            <tr>
+              <td class="col-index">{{ forloop.counter }}</td>
+              <td class="col-title">
+                <a href="{% url 'course:course_detail' course.course_id %}">
+                  {{ course.title }}
+                </a>
+              </td>
+              <td class="col-instructor">{{ course.instructor.name }}</td>
+              <td class="col-date">{{ course.created_at|date:"Y-m-d" }}</td>
+              <td class="col-views">{{ course.views }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <!-- 비어 있을 때 -->
+      <div class="empty-state">
+        <div class="emoji">📚</div>
+        <p class="empty-title">등록된 강의가 없습니다.</p>
+
+        {% if request.user.is_authenticated %}
+          {% if request.user.role == "instructor" or request.user.role == "manager" %}
+          <p class="empty-desc">첫 강의를 등록해 수강생들에게 콘텐츠를 제공해 보세요.</p>
+          <a href="{% url 'course:course_create' %}" class="btn-primary">
+            첫 강의 등록하기
+          </a>
+          {% endif %}
+        {% endif %}
       </div>
       {% endif %}
-    {% endif %}
 
-    <!-- 강의 목록 -->
-    <table style="width: 100%; border-collapse: collapse;">
-      <thead>
-        <tr style="border-bottom: 2px solid #ddd; background-color: #f8f9fa;">
-          <th style="padding: 12px; text-align: center; width: 80px;">번호</th>
-          <th style="padding: 12px; text-align: left;">강의명</th>
-          <th style="padding: 12px; text-align: center; width: 120px;">강사</th>
-          <th style="padding: 12px; text-align: center; width: 120px;">등록일</th>
-          <th style="padding: 12px; text-align: center; width: 80px;">조회수</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for course in courses %}
-        <tr style="border-bottom: 1px solid #eee;">
-          <td style="padding: 12px; text-align: center;">{{ forloop.counter }}</td>
-          <td style="padding: 12px;">
-            <a href="{% url 'course:course_detail' course.course_id %}" style="text-decoration: none; color: #212529; font-weight: 500;">
-              {{ course.title }}
-            </a>
-          </td>
-          <td style="padding: 12px; text-align: center;">{{ course.instructor.name }}</td>
-          <td style="padding: 12px; text-align: center;">{{ course.created_at|date:"Y-m-d" }}</td>
-          <td style="padding: 12px; text-align: center;">{{ course.views }}</td>
-        </tr>
-        {% empty %}
-        <tr>
-          <td colspan="5" style="padding: 50px; text-align: center; color: #6c757d;">
-            <p style="font-size: 18px; margin-bottom: 10px;">📚</p>
-            <p>등록된 강의가 없습니다.</p>
-            {% if request.user.is_authenticated %}
-              {% if request.user.role == "instructor" or request.user.role == "manager" %}
-              <p style="margin-top: 15px;">
-                <a href="{% url 'course:course_create' %}" style="display: inline-block; padding: 10px 20px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px;">첫 강의 등록하기</a>
-              </p>
-              {% endif %}
-            {% endif %}
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    </section>
 
   </div>
 </main>

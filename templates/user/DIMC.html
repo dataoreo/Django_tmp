@@ -1,11 +1,39 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>DIMC 검사 안내</title>
-</head>
-<body>
-    <p>로그인 후 마이페이지에서 dimc 검사 결과지를 업로드 해주세요</p>
-    <button onclick="window.location.href='/'">홈으로 돌아가기</button>
-</body>
-</html>
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}DIMC 검사 안내{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/DIMC.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section (텍스트 삭제됨) -->
+<section class="hero">
+  <div class="hero-inner">
+    <!-- ❌ <h1 class="hero-title">DIMC 검사 안내</h1> 삭제 -->
+  </div>
+</section>
+
+<!-- Card Section -->
+<main class="card-wrap">
+  <div class="card-inner">
+
+    <section class="dimc-card">
+      <h2 class="card-title">DIMC 검사 안내</h2>
+
+      <p class="desc">
+        로그인 후 <strong>마이페이지</strong>에서 DIMC 검사 결과지를 업로드해 주세요.<br>
+        검사 결과 업로드 후 담당자가 확인하여 권한이 부여됩니다.
+      </p>
+
+      <div class="cta">
+        <a href="{% url 'index' %}" class="btn-primary">홈으로 돌아가기</a>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+{% endblock %}

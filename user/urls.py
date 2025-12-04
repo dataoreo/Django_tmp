@@ -27,6 +27,7 @@ urlpatterns = [
     # DIMC
     path('DIMC', views.DIMC_view, name='DIMC'),
     path('DIMC_archive', views.DIMC_archive_view, name='DIMC_archive'),
+    path('dimc_results', views.dimc_results_view, name='dimc_results'),
 
     path('course/', views.dashboard_view, name='dashboard' ),
     path('calendar/', views.calendar_view, name='main_calendar'),

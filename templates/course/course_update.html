@@ -3,6 +3,10 @@
 
 {% block title %}강의 수정 | DORO LMS{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/course_update.css' %}">
+{% endblock %}
+
 {% block content %}
 <section class="hero">
   <div class="hero-inner">
@@ -12,41 +16,49 @@
 
 <main class="card-wrap">
   <div class="card-inner">
-    <form method="post" style="max-width: 800px; margin: 0 auto;">
-      {% csrf_token %}
+    <section class="course-card">
+      <h2 class="card-title">강의 정보 수정</h2>
 
-      <div style="margin-bottom: 20px;">
-        <label style="display: block; margin-bottom: 8px; font-weight: 600;">{{ form.title.label }}</label>
-        {{ form.title }}
-        {% if form.title.errors %}
-          <p style="color: #dc3545; font-size: 14px; margin-top: 5px;">{{ form.title.errors }}</p>
-        {% endif %}
-      </div>
+      <form method="post" class="course-form">
+        {% csrf_token %}
 
-      <div style="margin-bottom: 20px;">
-        <label style="display: block; margin-bottom: 8px; font-weight: 600;">{{ form.description.label }}</label>
-        {{ form.description }}
-        {% if form.description.errors %}
-          <p style="color: #dc3545; font-size: 14px; margin-top: 5px;">{{ form.description.errors }}</p>
-        {% endif %}
-      </div>
+        {# 폼 전체 에러 (non_field_errors) #}
+        {{ form.non_field_errors }}
 
-      <div style="margin-bottom: 30px;">
-        <label style="display: flex; align-items: center; gap: 8px;">
-          {{ form.is_active }}
-          <span>{{ form.is_active.label }}</span>
-        </label>
-      </div>
+        <!-- 강의명 -->
+        <div class="field col-2">
+          <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+          {{ form.title }}
+          {{ form.title.errors }}
+        </div>
 
-      <div style="display: flex; gap: 10px; justify-content: flex-end;">
-        <a href="{% url 'course:course_detail' course.course_id %}" style="display: inline-block; padding: 10px 20px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 5px;">
-          취소
-        </a>
-        <button type="submit" style="padding: 10px 20px; background-color: #0d6efd; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: 500;">
-          수정하기
-        </button>
-      </div>
-    </form>
+        <!-- 강의 설명 -->
+        <div class="field col-2">
+          <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+          {{ form.description }}
+          {{ form.description.errors }}
+        </div>
+
+        <!-- 활성 여부 -->
+        <div class="field col-2 field-inline">
+          <label class="checkbox-label">
+            {{ form.is_active }}
+            <span>{{ form.is_active.label }}</span>
+          </label>
+          {{ form.is_active.errors }}
+        </div>
+
+        <!-- 버튼 영역 -->
+        <div class="form-actions col-2">
+          <a href="{% url 'course:course_detail' course.course_id %}" class="btn-secondary">
+            취소
+          </a>
+          <button type="submit" class="btn-primary">
+            수정하기
+          </button>
+        </div>
+      </form>
+    </section>
   </div>
 </main>
 {% endblock %}
